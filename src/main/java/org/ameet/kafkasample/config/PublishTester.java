@@ -1,4 +1,4 @@
-package org.ameet.kafkasample;
+package org.ameet.kafkasample.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

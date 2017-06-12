@@ -1,4 +1,4 @@
-package org.ameet.kafkasample;
+package org.ameet.kafkasample.config;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -9,8 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.kafka.annotation.EnableKafka;
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
 import org.springframework.kafka.support.KafkaHeaders;
@@ -19,6 +19,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executor;
 
 /**
  * Created by Ameet Chaubal on 5/18/2017.
@@ -28,12 +29,22 @@ import java.util.Map;
 public class AppConfig {
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfig.class);
 
+    private static final int CONCURRENCY_LIMIT = 10;
     @Value(value = "${kafka.bootstrapAddress}")
     private String bootstrapAddress;
     @Value(value = "${group.simple}")
     private String simpleGroup;
     @Value(value = "${topic.simple.name}")
     private String simpleTopic;
+
+    @Bean
+    public Executor asyncExecutor() {
+        SimpleAsyncTaskExecutor executor = new SimpleAsyncTaskExecutor();
+        executor.setConcurrencyLimit(CONCURRENCY_LIMIT);
+        executor.setThreadNamePrefix("Kafka-");
+//        executor.setThreadGroupName("Kafka-");
+        return executor;
+    }
 
 
     @Bean
@@ -70,7 +81,7 @@ public class AppConfig {
         return new DefaultKafkaConsumerFactory<>(props);
     }
 
-//    @Bean
+    //    @Bean
     public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, String> factory = new
                 ConcurrentKafkaListenerContainerFactory<>();
@@ -78,7 +89,7 @@ public class AppConfig {
         return factory;
     }
 
-//    @KafkaListener(topics = "${topic.simple.name}", group = "${group.simple}")
+    //    @KafkaListener(topics = "${topic.simple.name}", group = "${group.simple}")
     public void listen(@Payload String message, @Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition) {
         LOGGER.info(">>>>>>>[part-{}]: Received Messasge in group:{} --> {} ", partition, simpleGroup, message);
     }

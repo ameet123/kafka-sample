@@ -14,6 +14,7 @@ import java.util.Random;
 
 /**
  * Created by Ameet Chaubal on 5/18/2017.
+ * to publish
  */
 @Component
 public class PublishTester {
@@ -23,12 +24,17 @@ public class PublishTester {
 
     @Value(value = "${topic.simple.name}")
     private String simpleTopic;
+    private final KafkaTemplate<String, String> kafkaTemplate;
+
     @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
+    public PublishTester(KafkaTemplate<String, String> kafkaTemplate) {
+        this.kafkaTemplate = kafkaTemplate;
+    }
 
     @Bean
     public ListenableFuture<SendResult<String, String>> publishSimple() {
-        LOGGER.info("Sending msg to topic:{}", simpleTopic);
-        return kafkaTemplate.send(simpleTopic, SAMPLE_MSG + "--" + random.nextInt());
+        String message = SAMPLE_MSG + "--" + random.nextInt();
+        LOGGER.info("Topic:[{}] Sending msg->{}", simpleTopic, message);
+        return kafkaTemplate.send(simpleTopic, message);
     }
 }

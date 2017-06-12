@@ -11,8 +11,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 public class Application {
     public static void main(String[] args) throws InterruptedException {
        ConfigurableApplicationContext appCtx =  SpringApplication.run(Application.class, args);
-        Thread.sleep(5000L);
-        appCtx.close();
+//        Thread.sleep(5000L);
+//        appCtx.close();
 
     }
 }

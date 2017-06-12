@@ -60,7 +60,7 @@ public class AppConfig {
     }
 
     // Consumer
-    @Bean
+//    @Bean
     public ConsumerFactory<String, String> simpleConsumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
@@ -70,7 +70,7 @@ public class AppConfig {
         return new DefaultKafkaConsumerFactory<>(props);
     }
 
-    @Bean
+//    @Bean
     public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, String> factory = new
                 ConcurrentKafkaListenerContainerFactory<>();
@@ -78,7 +78,7 @@ public class AppConfig {
         return factory;
     }
 
-    @KafkaListener(topics = "${topic.simple.name}", group = "${group.simple}")
+//    @KafkaListener(topics = "${topic.simple.name}", group = "${group.simple}")
     public void listen(@Payload String message, @Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition) {
         LOGGER.info(">>>>>>>[part-{}]: Received Messasge in group:{} --> {} ", partition, simpleGroup, message);
     }

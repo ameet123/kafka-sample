@@ -7,7 +7,17 @@ package org.ameet.kafkasample.model;
 public class SubmitStatus {
     private int elapsedMilli;
     private int id;
+    private int totalSent;
     private String kafkaTopic;
+    private String message;
+
+    public int getTotalSent() {
+        return totalSent;
+    }
+
+    public void setTotalSent(int totalSent) {
+        this.totalSent = totalSent;
+    }
 
     public int getElapsedMilli() {
         return elapsedMilli;
@@ -40,6 +50,4 @@ public class SubmitStatus {
     public void setMessage(String message) {
         this.message = message;
     }
-
-    private String message;
 }

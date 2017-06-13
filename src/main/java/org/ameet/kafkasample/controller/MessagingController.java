@@ -26,9 +26,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class MessagingController {
     private static final Logger LOGGER = LoggerFactory.getLogger(MessagingController.class);
     private static final String TEMPLATE = "howdy %s!";
-    private AtomicInteger index = new AtomicInteger(0);
-
     private final KafkaProcessor kafkaProcessor;
+    private AtomicInteger index = new AtomicInteger(0);
 
     @Autowired
     public MessagingController(KafkaProcessor kafkaProcessor) {
@@ -71,7 +70,8 @@ public class MessagingController {
         status.setKafkaTopic(kafkaProcessor.getSimpleTopic());
         Stopwatch stopwatch = Stopwatch.createStarted();
         kafkaProcessor.submitAsync(message.getContent());
+        status.setTotalSent(kafkaProcessor.getSentCount().get());
         status.setElapsedMilli((int) stopwatch.elapsed(TimeUnit.MILLISECONDS));
-        return new ResponseEntity<SubmitStatus>(status, HttpStatus.OK);
+        return new ResponseEntity<>(status, HttpStatus.OK);
     }
 }

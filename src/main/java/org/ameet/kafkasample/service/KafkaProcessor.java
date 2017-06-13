@@ -25,20 +25,22 @@ public class KafkaProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaProcessor.class);
     private final KafkaTemplate<String, String> kafkaTemplate;
     private AppConfig appConfig;
-
-    public String getSimpleTopic() {
-        return simpleTopic;
-    }
-
     @Value(value = "${topic.simple.name}")
     private String simpleTopic;
-
     private AtomicInteger sentCount = new AtomicInteger(0);
 
     @Autowired
     public KafkaProcessor(KafkaTemplate<String, String> kafkaTemplate, AppConfig appConfig) {
         this.kafkaTemplate = kafkaTemplate;
         this.appConfig = appConfig;
+    }
+
+    public String getSimpleTopic() {
+        return simpleTopic;
+    }
+
+    public AtomicInteger getSentCount() {
+        return sentCount;
     }
 
     /**

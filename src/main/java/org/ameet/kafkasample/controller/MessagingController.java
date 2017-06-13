@@ -1,14 +1,20 @@
 package org.ameet.kafkasample.controller;
 
+import com.google.common.base.Stopwatch;
+import org.ameet.kafkasample.model.KMessage;
+import org.ameet.kafkasample.model.SubmitStatus;
 import org.ameet.kafkasample.service.KafkaProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.async.DeferredResult;
 
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -30,8 +36,42 @@ public class MessagingController {
     }
 
     @RequestMapping("/submit/{content}")
-    public CompletableFuture<Integer> submit(@PathVariable String content) {
-        LOGGER.debug(">> received message on kafka submit...");
-        return kafkaProcessor.submit(content);
+    public DeferredResult<Integer> submitSync(@PathVariable String content) {
+        LOGGER.debug(">> received message on kafka submitSync...");
+        DeferredResult<Integer> deferred = new DeferredResult<Integer>(90000L);
+        CompletableFuture<Integer> f = kafkaProcessor.submit(content);
+        f.whenComplete((res, ex) -> {
+            if (ex != null) {
+                deferred.setErrorResult(ex);
+            } else {
+                deferred.setResult(res);
+            }
+        });
+        return deferred;
+    }
+
+    @RequestMapping("/submitAsync/{content}")
+    public String submitAsync(@PathVariable String content) {
+        LOGGER.debug(">> received message on kafka submitAsync...");
+        kafkaProcessor.submitAsync(content);
+        return "Message sent";
+    }
+
+    @RequestMapping("/metrics")
+    public Map<String, Double> metrics() {
+        return kafkaProcessor.metrics();
+    }
+
+    @RequestMapping(value = "/send", method = RequestMethod.POST)
+    public ResponseEntity<SubmitStatus> send(@RequestBody KMessage message) {
+        LOGGER.debug(">> received POST message on kafka send...");
+        SubmitStatus status = new SubmitStatus();
+        status.setId(message.getId());
+        status.setMessage(message.getContent());
+        status.setKafkaTopic(kafkaProcessor.getSimpleTopic());
+        Stopwatch stopwatch = Stopwatch.createStarted();
+        kafkaProcessor.submitAsync(message.getContent());
+        status.setElapsedMilli((int) stopwatch.elapsed(TimeUnit.MILLISECONDS));
+        return new ResponseEntity<SubmitStatus>(status, HttpStatus.OK);
     }
 }

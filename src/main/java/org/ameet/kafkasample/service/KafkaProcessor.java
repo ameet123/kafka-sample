@@ -11,11 +11,10 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 /**
  * Created by ameet.chaubal on 6/12/2017.
@@ -26,6 +25,11 @@ public class KafkaProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaProcessor.class);
     private final KafkaTemplate<String, String> kafkaTemplate;
     private AppConfig appConfig;
+
+    public String getSimpleTopic() {
+        return simpleTopic;
+    }
+
     @Value(value = "${topic.simple.name}")
     private String simpleTopic;
 
@@ -47,17 +51,35 @@ public class KafkaProcessor {
         return CompletableFuture.supplyAsync(() -> {
             LOGGER.info("Topic:[{}] Sending async msg->{}", simpleTopic, message);
             kafkaTemplate.send(simpleTopic, message);
-            metrics();
+            totalCount();
             Util.delay(5000L);
             return sentCount.incrementAndGet();
-        }, appConfig.asyncExecutor());
+        }, appConfig.getAsyncExecutor());
     }
 
-    private void metrics() {
+    @Async
+    public void submitAsync(String message) {
+        LOGGER.debug("Topic:[{}] Sending simple async msg->{} cnt:{}", simpleTopic, message, sentCount
+                .incrementAndGet());
+        kafkaTemplate.send(simpleTopic, message);
+    }
+
+    private void totalCount() {
         KafkaMetric countMetric = (KafkaMetric) kafkaTemplate.metrics().entrySet().stream().
                 filter(metricNameEntry -> metricNameEntry.getKey().name().equals("count")).
                 map(Map.Entry::getValue).
                 findFirst().orElse(null);
         LOGGER.debug("Total Count==>{}", countMetric.value());
+    }
+
+    /**
+     * get a map of metrics from kafka
+     *
+     * @return
+     */
+    public Map<String, Double> metrics() {
+        Map<String, Double> metricMap = new HashMap<>();
+        kafkaTemplate.metrics().forEach((metricName, o) -> metricMap.put(metricName.name(), o.value()));
+        return metricMap;
     }
 }

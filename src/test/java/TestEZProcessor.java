@@ -5,7 +5,6 @@ import org.ameet.kafkasample.model.ihg.EZMessage;
 import org.ameet.kafkasample.model.ihg.reservation.EnvelopeType;
 import org.ameet.kafkasample.model.ihg.reservation.ObjectFactory;
 import org.junit.Test;
-import org.w3c.dom.DocumentType;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -36,6 +35,7 @@ public class TestEZProcessor {
 
 
         JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
+        @SuppressWarnings("unchecked")
         EnvelopeType envelopeType = ((JAXBElement<EnvelopeType>) jaxbContext.createUnmarshaller().unmarshal
                 (new StringReader(text))).getValue();
 

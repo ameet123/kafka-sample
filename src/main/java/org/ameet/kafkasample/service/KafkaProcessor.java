@@ -1,5 +1,8 @@
 package org.ameet.kafkasample.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
 import org.ameet.kafkasample.Util;
 import org.ameet.kafkasample.config.AppConfig;
 import org.apache.kafka.common.metrics.KafkaMetric;
@@ -11,6 +14,8 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -23,6 +28,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Service
 public class KafkaProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaProcessor.class);
+    private static final String EZ_SAMPLE_FILE = "sample.json";
+    private static String EZ_SAMPLE_MSG;
     private final KafkaTemplate<String, String> kafkaTemplate;
     private AppConfig appConfig;
     @Value(value = "${topic.simple.name}")
@@ -30,9 +37,12 @@ public class KafkaProcessor {
     private AtomicInteger sentCount = new AtomicInteger(0);
 
     @Autowired
-    public KafkaProcessor(KafkaTemplate<String, String> kafkaTemplate, AppConfig appConfig) {
+    public KafkaProcessor(KafkaTemplate<String, String> kafkaTemplate, AppConfig appConfig) throws IOException {
         this.kafkaTemplate = kafkaTemplate;
         this.appConfig = appConfig;
+        URL url = Resources.getResource(EZ_SAMPLE_FILE);
+        EZ_SAMPLE_MSG = Resources.toString(url, Charsets.UTF_8);
+        LOGGER.debug("Sample EZ Message:\n{}", EZ_SAMPLE_MSG);
     }
 
     public String getSimpleTopic() {
@@ -64,6 +74,13 @@ public class KafkaProcessor {
         LOGGER.debug("Topic:[{}] Sending simple async msg->{} cnt:{}", simpleTopic, message, sentCount
                 .incrementAndGet());
         kafkaTemplate.send(simpleTopic, message);
+    }
+
+    @Async
+    public void submitEzSample() {
+        LOGGER.debug("Topic:[{}] Sending sample EZ Json", simpleTopic);
+
+        kafkaTemplate.send(simpleTopic, EZ_SAMPLE_MSG);
     }
 
     private void totalCount() {

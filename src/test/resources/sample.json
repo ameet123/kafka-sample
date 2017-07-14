@@ -1,0 +1,104 @@
+{
+  "action": "Refresh",
+  "generationTime": "2017-02-20T05:00:10Z",
+  "roomTypes": [
+    {
+      "isPremium": false,
+      "isAccessible": false,
+      "name": "STANDARD ROOM ONLY",
+      "productClassCode": "02",
+      "propertyCode": "AMSEA",
+      "descriptions": [
+        {
+          "text": "TESTING PURPOSE ONLY",
+          "language": "en"
+        }
+      ],
+      "chainCode": "IHG",
+      "code": "CSTN",
+      "totalMaximumOccupancy": 9,
+      "isDisplayable": true,
+      "isHouseFlowThrough": true,
+      "isSpecialtyClass": false,
+      "sellStrategyOrder": 1,
+      "brandCode": "EX",
+      "isFlowThrough": true
+    },
+    {
+      "isPremium": false,
+      "isAccessible": true,
+      "name": "STUDIO STE 1QN HEAR MOBIL ACCESSIBLE TUB",
+      "productClassCode": "02",
+      "propertyCode": "AMSEA",
+      "descriptions": [
+        {
+          "text": "TESTING PURPOSE ONLY",
+          "language": "en"
+        }
+      ],
+      "chainCode": "IHG",
+      "code": "K1BG",
+      "totalMaximumOccupancy": 9,
+      "isDisplayable": true,
+      "isHouseFlowThrough": false,
+      "isSpecialtyClass": false,
+      "sellStrategyOrder": 2,
+      "brandCode": "EX",
+      "isFlowThrough": false
+    },
+    {
+      "isPremium": true,
+      "isAccessible": true,
+      "name": "STUDIO STE 1 QN HEAR ACCESS TUB NOSMK",
+      "productClassCode": "01",
+      "propertyCode": "AMSEA",
+      "chainCode": "IHG",
+      "code": "K1BN",
+      "totalMaximumOccupancy": 9,
+      "isDisplayable": true,
+      "isHouseFlowThrough": false,
+      "isSpecialtyClass": false,
+      "sellStrategyOrder": 3,
+      "brandCode": "EX",
+      "isFlowThrough": false
+    },
+    {
+      "isPremium": true,
+      "isAccessible": false,
+      "name": "STUDIO STE 2 QN HEAR ACCESS TRAN SHWR SM",
+      "productClassCode": "01",
+      "propertyCode": "AMSEA",
+      "chainCode": "IHG",
+      "code": "K2FS",
+      "totalMaximumOccupancy": 9,
+      "isDisplayable": true,
+      "isHouseFlowThrough": false,
+      "isSpecialtyClass": false,
+      "sellStrategyOrder": 4,
+      "brandCode": "EX",
+      "isFlowThrough": false
+    },
+    {
+      "isPremium": true,
+      "isAccessible": false,
+      "name": "2 SGL BD 2 PERS NONSMOKE",
+      "productClassCode": "01",
+      "propertyCode": "AMSEA",
+      "descriptions": [
+        {
+          "text": "test",
+          "language": "en"
+        }
+      ],
+      "chainCode": "IHG",
+      "code": "TTWN",
+      "totalMaximumOccupancy": 9,
+      "isDisplayable": true,
+      "isHouseFlowThrough": false,
+      "isSpecialtyClass": false,
+      "sellStrategyOrder": 5,
+      "brandCode": "EX",
+      "isFlowThrough": false
+    }
+  ]
+}

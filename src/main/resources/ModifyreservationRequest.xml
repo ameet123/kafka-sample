@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Envelope>
+    <Hdr>
+        <OrigSys>HDX</OrigSys>
+        <OrigChan>HDX</OrigChan>
+        <OrigApp>GNR Display</OrigApp>
+        <OrigTime>2017-06-28T13:33:49-04:00</OrigTime>
+        <DestChan>WEBWB</DestChan>
+        <DestApp>WEBWB</DestApp>
+        <Action>HtlResModRS</Action>
+        <MsgVer>1.0</MsgVer>
+        <MsgMode>Sync</MsgMode>
+        <MsgID>61c93e48-f7be-4bfa-9bff-0545b05f3fce</MsgID>
+        <Env>Prod</Env>
+        <PayloadTy>XML</PayloadTy>
+    </Hdr>
+    <Payload>
+        <HtlResModRS>
+            <POS>
+                <Src RqstrID="WEBWB" />
+            </POS>
+            <SuccessRS>
+                <BookCNF>63182821</BookCNF>
+                <HtlRes ResStatus="GUA" />
+                <LastUpdate Date="2017-06-28" Time="1729" />
+                <OrigBkgData RqstrID="WEBIP" AgtSine="0000" AgtInit="00" AgtDtCd="PR" />
+                <MultAccom>N</MultAccom>
+                <Customers>
+                    <Customer Name="MICHAEL" SurName="HAYDEN" AdultSur="01" ChildSur="00" />
+                </Customers>
+                <Addrs>
+                    <Addr AddTy="Pri" AddNm="HAYDEN M" AddLn1="PO BOX 2326" AddLn2="EUGENE OR 97402-0073" AddLn3="UNITED STATES" />
+                    <Addr AddTy="Sec" AddNm="MICHAEL HAYDEN" AddLn1="PO BOX 2326" AddLn2="EUGENE OR" AddLn3="0001 97402-0073" />
+                </Addrs>
+                <Phones>
+                    <Phone PhNbr="NONE" />
+                </Phones>
+                <MbrInfo PclubNbr="724406088" />
+                <Email>mrhayden9@gmail.com</Email>
+                <EmailLang>ENGLISH</EmailLang>
+                <Htl ChnCd="HI" BrdCd="HS" BrdNm="HOLIDAY INN HOTEL AND SUITES" HtlCd="CAEQT" ShHtlName="CAEQT COLUMBIA ARPT">
+                    <NatCur>USD</NatCur>
+                    <LateArrival>1800</LateArrival>
+                </Htl>
+                <Stay Start="2017-07-24" End="2017-07-27" Adult="1" />
+                <RtItm RateCd="IDME2" ActCd="NS" Comm="Y" NoRtDisp="N" PcPts="Y" CroGte="N" IdReq="N" CVReq="N" PCReq="Y" HtlCxl="N" Hold24="Y" CkIn="1500" CkOut="1100" MinDay="1" VAdd="N" EasyGrp="N" FreeNight="N" SeqNum="0001">
+                    <ShRtDesc>IHG RC ADVANCE</ShRtDesc>
+                    <LgRtDesc>EXCLUSIVE SAVINGS FOR OUR IHG REWARDS CLUB MEMBERS. MUST BE AN IHG REWARDS CLUB MEMBER TO BOOK.</LgRtDesc>
+                    <BkgMsg>MEMBERSHIP REQUIRED</BkgMsg>
+                    <AdvBkRule MinDay="4" AdvPur="Y" />
+                    <GteePol GteeRqd="Y" />
+                    <XPerData XPerChgStart="3">
+                        <Amount Value="0" NbrDec="2" CurCd="USD" />
+                    </XPerData>
+                    <DepPol Start="2017-06-26" AtBkng="Y" BasisTy="Ent" />
+                    <NoShwPen CxlDate="2017-06-26" CxlTime="1800" GracePer="N" AtBkng="Y" BasisTy="Ent" />
+                    <RmItm RmCd="KNGN" RmCnt="1" MaxGst="2">
+                        <ShRmDesc>1 KING BED LEISURE NONSMOKING</ShRmDesc>
+                        <LgRmDesc>RELAX IN THIS ECO FRIENDLY ROOM AS YOU SURF WITH FREE WI FI ACCESS AND WATCH HBO ON A 40 INCH LCD TV A LARGE WORK AREA  WITH AN ERGONOMIC CHAIR MAKES IT EASY TO STAY PRODUCTIVE.   SLEEP SOUNDLY ON THE CRISP TRIPLE SHEETED BED AND REFRESH   IN A BATHROOM WITH GRANITE COUNTERS.</LgRmDesc>
+                        <Amount Value="11349" NbrDec="2" CurCd="USD" />
+                        <UsrAmnt Value="11349" NbrDec="2" CurCd="USD" />
+                        <AvgRate>
+                            <Amount Value="11349" NbrDec="2" CurCd="USD" />
+                        </AvgRate>
+                    </RmItm>
+                </RtItm>
+                <Gtee>
+                    <PayTy TyCd="GX" />
+                    <GteePay CardCd="MC" CardNbr="7541766142324553" ExpDt="0320" />
+                </Gtee>
+                <TaxItms>
+                    <TaxItm Start="2017-07-24" End="2017-07-27" InclTy="N" BasisTy="PerNt" Pct="13.07">
+                        <TaxDesc>STATE. CITY. LOCAL LODGING. OCCUPANCY DESTINATION MARKETING TAX.</TaxDesc>
+                    </TaxItm>
+                </TaxItms>
+                <FactItms>
+                    <FactItm>
+                        <FactLn>RB USD 10.  XP USD 10.  10 PCT TA CMSN.</FactLn>
+                        <FactLn>NO PETS ALLOWED.PENALTY OF USD 300 WILL</FactLn>
+                        <FactLn>BE APPLIED AT CK OUT IF PETS ARE FOUND</FactLn>
+                        <FactLn>ON PROPERTY. SERVICE ANIMALS ALLOWED.</FactLn>
+                        <FactLn>KENNELS LOCATED NEARBY.</FactLn>
+                        <FactLn>MINIMUM CHECK IN AGE IS 21.</FactLn>
+                        <FactLn>100 PCT NONSMOKING HOTEL.</FactLn>
+                    </FactItm>
+                </FactItms>
+                <SrvCds>
+                    <SrvCd SrvHtl="CAEQT" SrvVal="AR" SrvTxt="ANCILLARY RESERVATION" />
+                </SrvCds>
+                <OrigSellDate>2017-06-28</OrigSellDate>
+                <TTT TTR="34047" TXP="0" TTX="4449" TSX="0" TMT="38496" CurCd="USD" NbrDec="2" />
+                <Daily Start="2017-07-24" End="2017-07-27" dTTR="11349" dTXP="0" dTTX="1483" dTSX="0" dTMT="12832" CurCd="USD" NbrDec="2" />
+            </SuccessRS>
+        </HtlResModRS>
+    </Payload>
+</Envelope>

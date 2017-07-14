@@ -1,17 +1,21 @@
 package org.ameet.kafkasample.config;
 
+import org.ameet.kafkasample.model.ihg.EZMessage;
+import org.ameet.kafkasample.service.EZMessageProcessor;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.kafka.annotation.EnableKafka;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
 import org.springframework.kafka.support.KafkaHeaders;
@@ -19,9 +23,9 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.scheduling.annotation.EnableAsync;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Executor;
 
 /**
  * Created by Ameet Chaubal on 5/18/2017.
@@ -39,6 +43,8 @@ public class AppConfig {
     private String simpleGroup;
     @Value(value = "${topic.simple.name}")
     private String simpleTopic;
+    @Autowired
+    private EZMessageProcessor ezMessageProcessor;
 
     @Bean
     public TaskExecutor getAsyncExecutor() {
@@ -73,7 +79,7 @@ public class AppConfig {
     }
 
     // Consumer
-//    @Bean
+    @Bean
     public ConsumerFactory<String, String> simpleConsumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
@@ -83,7 +89,7 @@ public class AppConfig {
         return new DefaultKafkaConsumerFactory<>(props);
     }
 
-    //    @Bean
+    @Bean
     public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, String> factory = new
                 ConcurrentKafkaListenerContainerFactory<>();
@@ -91,8 +97,15 @@ public class AppConfig {
         return factory;
     }
 
-    //    @KafkaListener(topics = "${topic.simple.name}", group = "${group.simple}")
+    @KafkaListener(topics = "${topic.simple.name}", group = "${group.simple}")
     public void listen(@Payload String message, @Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition) {
-        LOGGER.info(">>>>>>>[part-{}]: Received Messasge in group:{} --> {} ", partition, simpleGroup, message);
+        LOGGER.info(">>>>>>>[part-{}]: Received Messasge in group:{}   ", partition, simpleGroup);
+        try {
+            EZMessage ezMessage = ezMessageProcessor.unmarshalEz(message);
+            LOGGER.info("{} --> {}", ezMessage.getAction(), ezMessage.getGenerationTime());
+        } catch (IOException e) {
+            LOGGER.error("Err: EZ message unmarshalling");
+        }
+
     }
 }

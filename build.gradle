@@ -29,6 +29,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile group: 'org.springframework.kafka', name: 'spring-kafka', version: '1.2.1.RELEASE'
     compile group: 'com.google.guava', name: 'guava', version: '22.0'
+    compile group: 'xstream', name: 'xstream', version: '1.2.2'
 
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }

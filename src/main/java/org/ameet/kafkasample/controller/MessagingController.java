@@ -56,6 +56,13 @@ public class MessagingController {
         return "Message sent";
     }
 
+    @RequestMapping("/submitEz")
+    public String submitEZ( ) {
+        LOGGER.debug(">> EZ Received");
+        kafkaProcessor.submitEzSample();
+        return "Message sent";
+    }
+
     @RequestMapping("/metrics")
     public Map<String, Double> metrics() {
         return kafkaProcessor.metrics();

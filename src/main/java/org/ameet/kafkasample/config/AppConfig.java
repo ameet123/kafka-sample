@@ -1,7 +1,8 @@
 package org.ameet.kafkasample.config;
 
-import org.ameet.kafkasample.model.ihg.EZMessage;
 import org.ameet.kafkasample.service.EZMessageProcessor;
+import org.ameet.kafkasample.service.MessageType;
+import org.ameet.kafkasample.service.MessageTypeDetectionService;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -23,7 +24,6 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.scheduling.annotation.EnableAsync;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,6 +45,8 @@ public class AppConfig {
     private String simpleTopic;
     @Autowired
     private EZMessageProcessor ezMessageProcessor;
+    @Autowired
+    private MessageTypeDetectionService messageTypeDetectionService;
 
     @Bean
     public TaskExecutor getAsyncExecutor() {
@@ -100,12 +102,7 @@ public class AppConfig {
     @KafkaListener(topics = "${topic.simple.name}", group = "${group.simple}")
     public void listen(@Payload String message, @Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition) {
         LOGGER.info(">>>>>>>[part-{}]: Received Messasge in group:{}   ", partition, simpleGroup);
-        try {
-            EZMessage ezMessage = ezMessageProcessor.unmarshalEz(message);
-            LOGGER.info("{} --> {}", ezMessage.getAction(), ezMessage.getGenerationTime());
-        } catch (IOException e) {
-            LOGGER.error("Err: EZ message unmarshalling");
-        }
-
+        MessageType type = messageTypeDetectionService.detectMessageType(message);
+        LOGGER.info("Message Type==>{}", type);
     }
 }

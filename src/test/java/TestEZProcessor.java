@@ -14,6 +14,7 @@ import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URL;
+import java.util.regex.Pattern;
 
 /**
  * Created by ameet.chaubal on 7/14/2017.
@@ -36,9 +37,13 @@ public class TestEZProcessor {
         String text = Util.fileToString("Reservation.json");
 //        System.out.println(text);
         Reservation reservation = mapper.readValue(text, Reservation.class);
-        System.out.println("HotelCode: "+reservation.getHotelReservation().getHotel().getCode());
+        System.out.println("HotelCode: " + reservation.getHotelReservation().getHotel().getCode());
         reservation.getHotelReservation().getGuests().forEach(guest -> System.out.println(guest.getPersonName()
-                .getGivenName()+":"+guest.getPersonName().getSurname()));
+                .getGivenName() + ":" + guest.getPersonName().getSurname()));
+        Pattern pattern = Pattern.compile("(?=.*\\{.*)(?=hotelReservation)", Pattern.DOTALL);
+        if (pattern.matcher(text).find()) {
+            System.out.println("YESSSS!!");
+        }
     }
 
     @Test

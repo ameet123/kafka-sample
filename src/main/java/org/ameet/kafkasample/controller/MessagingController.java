@@ -58,9 +58,21 @@ public class MessagingController {
 
     @RequestMapping("/submitEz")
     public String submitEZ( ) {
-        LOGGER.debug(">> EZ Received");
+        LOGGER.debug(">> EZ sent");
         kafkaProcessor.submitEzSample();
-        return "Message sent";
+        return "EZ Message sent";
+    }
+    @RequestMapping("/submitJsonReserv")
+    public String submitReservation( ) {
+        LOGGER.debug(">> Reserve JSON sent");
+        kafkaProcessor.submitJsonReservationSample();
+        return "Reservation JSON Message sent";
+    }
+    @RequestMapping("/submitXml")
+    public String submitXml( ) {
+        LOGGER.debug(">> Xml sent");
+        kafkaProcessor.submitXMLSample();
+        return "XML Message sent";
     }
 
     @RequestMapping("/metrics")

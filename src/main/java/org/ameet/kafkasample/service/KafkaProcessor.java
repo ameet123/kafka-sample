@@ -1,6 +1,5 @@
 package org.ameet.kafkasample.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import org.ameet.kafkasample.Util;
@@ -29,7 +28,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class KafkaProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaProcessor.class);
     private static final String EZ_SAMPLE_FILE = "sample.json";
-    private static String EZ_SAMPLE_MSG;
+    private static String XML_MODIFY_REQ_MSG, EZ_SAMPLE_MSG, RESERV_SAMPLE_MSG;
     private final KafkaTemplate<String, String> kafkaTemplate;
     private AppConfig appConfig;
     @Value(value = "${topic.simple.name}")
@@ -42,7 +41,8 @@ public class KafkaProcessor {
         this.appConfig = appConfig;
         URL url = Resources.getResource(EZ_SAMPLE_FILE);
         EZ_SAMPLE_MSG = Resources.toString(url, Charsets.UTF_8);
-        LOGGER.debug("Sample EZ Message:\n{}", EZ_SAMPLE_MSG);
+        RESERV_SAMPLE_MSG = Util.fileToString("json/Reservation.json");
+        XML_MODIFY_REQ_MSG = Util.fileToString("ModifyreservationRequest.xml");
     }
 
     public String getSimpleTopic() {
@@ -79,8 +79,17 @@ public class KafkaProcessor {
     @Async
     public void submitEzSample() {
         LOGGER.debug("Topic:[{}] Sending sample EZ Json", simpleTopic);
-
         kafkaTemplate.send(simpleTopic, EZ_SAMPLE_MSG);
+    }
+
+    public void submitJsonReservationSample() {
+        LOGGER.debug("Topic:[{}] Sending sample Reservation Json", simpleTopic);
+        kafkaTemplate.send(simpleTopic, RESERV_SAMPLE_MSG);
+    }
+
+    public void submitXMLSample() {
+        LOGGER.debug("Topic:[{}] Sending sample XML", simpleTopic);
+        kafkaTemplate.send(simpleTopic, XML_MODIFY_REQ_MSG);
     }
 
     private void totalCount() {

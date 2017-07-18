@@ -2,8 +2,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import org.ameet.kafkasample.model.ihg.EZMessage;
-import org.ameet.kafkasample.model.ihg.reservation.EnvelopeType;
-import org.ameet.kafkasample.model.ihg.reservation.ObjectFactory;
+import org.ameet.kafkasample.model.ihg.junk.EnvelopeType;
+import org.ameet.kafkasample.model.ihg.junk.ObjectFactory;
 import org.junit.Test;
 
 import javax.xml.bind.JAXBContext;

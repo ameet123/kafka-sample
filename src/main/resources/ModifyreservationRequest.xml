@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Envelope>
+<Envelope xmlns="http://ameet.org/reserv/envelope">
     <Hdr>
         <OrigSys>HDX</OrigSys>
         <OrigChan>HDX</OrigChan>

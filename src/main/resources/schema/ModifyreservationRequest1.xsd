@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+           targetNamespace="http://ameet.org/reserv/envelope" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="Envelope" type="env:EnvelopeType" xmlns:env="http://ameet.org/reserv/envelope"/>
+    <xs:complexType name="RtItmType">
+        <xs:sequence>
+            <xs:element type="xs:string" name="ShRtDesc"/>
+            <xs:element type="xs:string" name="LgRtDesc"/>
+            <xs:element type="xs:string" name="BkgMsg"/>
+            <xs:element type="env:AdvBkRuleType" name="AdvBkRule" xmlns:env="http://ameet.org/reserv/envelope"/>
+            <xs:element type="env:GteePolType" name="GteePol" xmlns:env="http://ameet.org/reserv/envelope"/>
+            <xs:element type="env:XPerDataType" name="XPerData" xmlns:env="http://ameet.org/reserv/envelope"/>
+            <xs:element type="env:DepPolType" name="DepPol" xmlns:env="http://ameet.org/reserv/envelope"/>
+            <xs:element type="env:NoShwPenType" name="NoShwPen" xmlns:env="http://ameet.org/reserv/envelope"/>
+            <xs:element type="env:RmItmType" name="RmItm" xmlns:env="http://ameet.org/reserv/envelope"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="RateCd"/>
+        <xs:attribute type="xs:string" name="ActCd"/>
+        <xs:attribute type="xs:string" name="Comm"/>
+        <xs:attribute type="xs:string" name="NoRtDisp"/>
+        <xs:attribute type="xs:string" name="PcPts"/>
+        <xs:attribute type="xs:string" name="CroGte"/>
+        <xs:attribute type="xs:string" name="IdReq"/>
+        <xs:attribute type="xs:string" name="CVReq"/>
+        <xs:attribute type="xs:string" name="PCReq"/>
+        <xs:attribute type="xs:string" name="HtlCxl"/>
+        <xs:attribute type="xs:string" name="Hold24"/>
+        <xs:attribute type="xs:string" name="CkIn"/>
+        <xs:attribute type="xs:string" name="CkOut"/>
+        <xs:attribute type="xs:string" name="MinDay"/>
+        <xs:attribute type="xs:string" name="VAdd"/>
+        <xs:attribute type="xs:string" name="EasyGrp"/>
+        <xs:attribute type="xs:string" name="FreeNight"/>
+        <xs:attribute type="xs:string" name="SeqNum"/>
+    </xs:complexType>
+    <xs:complexType name="FactItmType">
+        <xs:sequence>
+            <xs:element name="FactLn" maxOccurs="unbounded" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="RB USD 10.  XP USD 10.  10 PCT TA CMSN."/>
+                        <xs:enumeration value="NO PETS ALLOWED.PENALTY OF USD 300 WILL"/>
+                        <xs:enumeration value="BE APPLIED AT CK OUT IF PETS ARE FOUND"/>
+                        <xs:enumeration value="ON PROPERTY. SERVICE ANIMALS ALLOWED."/>
+                        <xs:enumeration value="KENNELS LOCATED NEARBY."/>
+                        <xs:enumeration value="MINIMUM CHECK IN AGE IS 21."/>
+                        <xs:enumeration value="100 PCT NONSMOKING HOTEL."/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AdvBkRuleType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="MinDay"/>
+                <xs:attribute type="xs:string" name="AdvPur"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="NoShwPenType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="CxlDate"/>
+                <xs:attribute type="xs:string" name="CxlTime"/>
+                <xs:attribute type="xs:string" name="GracePer"/>
+                <xs:attribute type="xs:string" name="AtBkng"/>
+                <xs:attribute type="xs:string" name="BasisTy"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="AddrType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="AddTy" use="optional"/>
+                <xs:attribute type="xs:string" name="AddNm" use="optional"/>
+                <xs:attribute type="xs:string" name="AddLn1" use="optional"/>
+                <xs:attribute type="xs:string" name="AddLn2" use="optional"/>
+                <xs:attribute type="xs:string" name="AddLn3" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="TTTType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="TTR"/>
+                <xs:attribute type="xs:string" name="TXP"/>
+                <xs:attribute type="xs:string" name="TTX"/>
+                <xs:attribute type="xs:string" name="TSX"/>
+                <xs:attribute type="xs:string" name="TMT"/>
+                <xs:attribute type="xs:string" name="CurCd"/>
+                <xs:attribute type="xs:string" name="NbrDec"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="DepPolType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="Start"/>
+                <xs:attribute type="xs:string" name="AtBkng"/>
+                <xs:attribute type="xs:string" name="BasisTy"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="SrvCdsType">
+        <xs:sequence>
+            <xs:element type="env:SrvCdType" name="SrvCd" xmlns:env="http://ameet.org/reserv/envelope"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="GteePayType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="CardCd"/>
+                <xs:attribute type="xs:string" name="CardNbr"/>
+                <xs:attribute type="xs:string" name="ExpDt"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="SuccessRSType">
+        <xs:sequence>
+            <xs:element type="xs:string" name="BookCNF"/>
+            <xs:element type="env:HtlResType" name="HtlRes" xmlns:env="http://ameet.org/reserv/envelope"/>
+            <xs:element type="env:LastUpdateType" name="LastUpdate" xmlns:env="http://ameet.org/reserv/envelope"/>
+            <xs:element type="env:OrigBkgDataType" name="OrigBkgData" xmlns:env="http://ameet.org/reserv/envelope"/>
+            <xs:element type="xs:string" name="MultAccom"/>
+            <xs:element type="env:CustomersType" name="Customers" xmlns:env="http://ameet.org/reserv/envelope"/>
+            <xs:element type="env:AddrsType" name="Addrs" xmlns:env="http://ameet.org/reserv/envelope"/>
+            <xs:element type="env:PhonesType" name="Phones" xmlns:env="http://ameet.org/reserv/envelope"/>
+            <xs:element type="env:MbrInfoType" name="MbrInfo" xmlns:env="http://ameet.org/reserv/envelope"/>
+            <xs:element type="xs:string" name="Email"/>
+            <xs:element type="xs:string" name="EmailLang"/>
+            <xs:element type="env:HtlType" name="Htl" xmlns:env="http://ameet.org/reserv/envelope"/>
+            <xs:element type="env:StayType" name="Stay" xmlns:env="http://ameet.org/reserv/envelope"/>
+            <xs:element type="env:RtItmType" name="RtItm" xmlns:env="http://ameet.org/reserv/envelope"/>
+            <xs:element type="env:GteeType" name="Gtee" xmlns:env="http://ameet.org/reserv/envelope"/>
+            <xs:element type="env:TaxItmsType" name="TaxItms" xmlns:env="http://ameet.org/reserv/envelope"/>
+            <xs:element type="env:FactItmsType" name="FactItms" xmlns:env="http://ameet.org/reserv/envelope"/>
+            <xs:element type="env:SrvCdsType" name="SrvCds" xmlns:env="http://ameet.org/reserv/envelope"/>
+            <xs:element type="xs:string" name="OrigSellDate"/>
+            <xs:element type="env:TTTType" name="TTT" xmlns:env="http://ameet.org/reserv/envelope"/>
+            <xs:element type="env:DailyType" name="Daily" xmlns:env="http://ameet.org/reserv/envelope"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="OrigBkgDataType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="RqstrID"/>
+                <xs:attribute type="xs:string" name="AgtSine"/>
+                <xs:attribute type="xs:string" name="AgtInit"/>
+                <xs:attribute type="xs:string" name="AgtDtCd"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="PhonesType">
+        <xs:sequence>
+            <xs:element type="env:PhoneType" name="Phone" xmlns:env="http://ameet.org/reserv/envelope"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="DailyType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="Start"/>
+                <xs:attribute type="xs:string" name="End"/>
+                <xs:attribute type="xs:string" name="dTTR"/>
+                <xs:attribute type="xs:string" name="dTXP"/>
+                <xs:attribute type="xs:string" name="dTTX"/>
+                <xs:attribute type="xs:string" name="dTSX"/>
+                <xs:attribute type="xs:string" name="dTMT"/>
+                <xs:attribute type="xs:string" name="CurCd"/>
+                <xs:attribute type="xs:string" name="NbrDec"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="SrcType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="RqstrID"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="HtlType">
+        <xs:sequence>
+            <xs:element type="xs:string" name="NatCur"/>
+            <xs:element type="xs:string" name="LateArrival"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="ChnCd"/>
+        <xs:attribute type="xs:string" name="BrdCd"/>
+        <xs:attribute type="xs:string" name="BrdNm"/>
+        <xs:attribute type="xs:string" name="HtlCd"/>
+        <xs:attribute type="xs:string" name="ShHtlName"/>
+    </xs:complexType>
+    <xs:complexType name="AddrsType">
+        <xs:sequence>
+            <xs:element type="env:AddrType" name="Addr" maxOccurs="unbounded" minOccurs="0"
+                        xmlns:env="http://ameet.org/reserv/envelope"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="HtlResModRSType">
+        <xs:sequence>
+            <xs:element type="env:POSType" name="POS" xmlns:env="http://ameet.org/reserv/envelope"/>
+            <xs:element type="env:SuccessRSType" name="SuccessRS" xmlns:env="http://ameet.org/reserv/envelope"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="MbrInfoType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="PclubNbr"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="GteeType">
+        <xs:sequence>
+            <xs:element type="env:PayTyType" name="PayTy" xmlns:env="http://ameet.org/reserv/envelope"/>
+            <xs:element type="env:GteePayType" name="GteePay" xmlns:env="http://ameet.org/reserv/envelope"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PayloadType">
+        <xs:sequence>
+            <xs:element type="env:HtlResModRSType" name="HtlResModRS" xmlns:env="http://ameet.org/reserv/envelope"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="CustomerType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="Name"/>
+                <xs:attribute type="xs:string" name="SurName"/>
+                <xs:attribute type="xs:string" name="AdultSur"/>
+                <xs:attribute type="xs:string" name="ChildSur"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="RmItmType">
+        <xs:sequence>
+            <xs:element type="xs:string" name="ShRmDesc"/>
+            <xs:element type="xs:string" name="LgRmDesc"/>
+            <xs:element type="env:AmountType" name="Amount" xmlns:env="http://ameet.org/reserv/envelope"/>
+            <xs:element type="env:UsrAmntType" name="UsrAmnt" xmlns:env="http://ameet.org/reserv/envelope"/>
+            <xs:element type="env:AvgRateType" name="AvgRate" xmlns:env="http://ameet.org/reserv/envelope"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="RmCd"/>
+        <xs:attribute type="xs:string" name="RmCnt"/>
+        <xs:attribute type="xs:string" name="MaxGst"/>
+    </xs:complexType>
+    <xs:complexType name="CustomersType">
+        <xs:sequence>
+            <xs:element type="env:CustomerType" name="Customer" xmlns:env="http://ameet.org/reserv/envelope"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PayTyType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="TyCd"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="HtlResType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="ResStatus"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="TaxItmType">
+        <xs:sequence>
+            <xs:element type="xs:string" name="TaxDesc"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="Start"/>
+        <xs:attribute type="xs:string" name="End"/>
+        <xs:attribute type="xs:string" name="InclTy"/>
+        <xs:attribute type="xs:string" name="BasisTy"/>
+        <xs:attribute type="xs:string" name="Pct"/>
+    </xs:complexType>
+    <xs:complexType name="HdrType">
+        <xs:sequence>
+            <xs:element type="xs:string" name="OrigSys"/>
+            <xs:element type="xs:string" name="OrigChan"/>
+            <xs:element type="xs:string" name="OrigApp"/>
+            <xs:element type="xs:string" name="OrigTime"/>
+            <xs:element type="xs:string" name="DestChan"/>
+            <xs:element type="xs:string" name="DestApp"/>
+            <xs:element type="xs:string" name="Action"/>
+            <xs:element type="xs:string" name="MsgVer"/>
+            <xs:element type="xs:string" name="MsgMode"/>
+            <xs:element type="xs:string" name="MsgID"/>
+            <xs:element type="xs:string" name="Env"/>
+            <xs:element type="xs:string" name="PayloadTy"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="LastUpdateType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="Date"/>
+                <xs:attribute type="xs:string" name="Time"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="EnvelopeType">
+        <xs:sequence>
+            <xs:element type="env:HdrType" name="Hdr" xmlns:env="http://ameet.org/reserv/envelope"/>
+            <xs:element type="env:PayloadType" name="Payload" xmlns:env="http://ameet.org/reserv/envelope"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="TaxItmsType">
+        <xs:sequence>
+            <xs:element type="env:TaxItmType" name="TaxItm" xmlns:env="http://ameet.org/reserv/envelope"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="SrvCdType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="SrvHtl"/>
+                <xs:attribute type="xs:string" name="SrvVal"/>
+                <xs:attribute type="xs:string" name="SrvTxt"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="FactItmsType">
+        <xs:sequence>
+            <xs:element type="env:FactItmType" name="FactItm" xmlns:env="http://ameet.org/reserv/envelope"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="GteePolType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="GteeRqd"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="UsrAmntType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="Value"/>
+                <xs:attribute type="xs:string" name="NbrDec"/>
+                <xs:attribute type="xs:string" name="CurCd"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="StayType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="Start"/>
+                <xs:attribute type="xs:string" name="End"/>
+                <xs:attribute type="xs:string" name="Adult"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="AmountType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="Value" use="optional"/>
+                <xs:attribute type="xs:string" name="NbrDec" use="optional"/>
+                <xs:attribute type="xs:string" name="CurCd" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="AvgRateType">
+        <xs:sequence>
+            <xs:element type="env:AmountType" name="Amount" xmlns:env="http://ameet.org/reserv/envelope"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="POSType">
+        <xs:sequence>
+            <xs:element type="env:SrcType" name="Src" xmlns:env="http://ameet.org/reserv/envelope"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PhoneType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="PhNbr"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="XPerDataType">
+        <xs:sequence>
+            <xs:element type="env:AmountType" name="Amount" xmlns:env="http://ameet.org/reserv/envelope"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="XPerChgStart"/>
+    </xs:complexType>
+</xs:schema>

@@ -45,10 +45,10 @@ dependencies {
 
 jaxb {
     System.setProperty('javax.xml.accessExternalSchema', 'all')
+    xsdDir = "src/main/resources/schema"
     xjc {
-        xsdDir = "src/main/resources/schema"
         generatePackage = "org.ameet.kafkasample.model.ihg.reservation"
-        bindingsDir = "src/main/resources/schema"
+        bindingsDir = "src/main/resources/schema/bindings"
         bindings = ["reserv.xjb"]
     }
 }

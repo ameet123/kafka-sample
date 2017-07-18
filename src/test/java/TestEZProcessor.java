@@ -1,9 +1,11 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
+import org.ameet.kafkasample.Util;
 import org.ameet.kafkasample.model.ihg.EZMessage;
-import org.ameet.kafkasample.model.ihg.junk.EnvelopeType;
-import org.ameet.kafkasample.model.ihg.junk.ObjectFactory;
+import org.ameet.kafkasample.model.ihg.json.Reservation;
+import org.ameet.kafkasample.model.ihg.reservation.EnvelopeType;
+import org.ameet.kafkasample.model.ihg.reservation.ObjectFactory;
 import org.junit.Test;
 
 import javax.xml.bind.JAXBContext;
@@ -18,14 +20,25 @@ import java.net.URL;
  */
 public class TestEZProcessor {
     private static final String MODIFY_RESERV_REQ_XML_FILE = "ModifyreservationRequest.xml";
+    private static ObjectMapper mapper = new ObjectMapper();
 
     @Test
     public void testEzConvert() throws IOException {
         URL url = Resources.getResource("sample.json");
         String text = Resources.toString(url, Charsets.UTF_8);
-        ObjectMapper mapper = new ObjectMapper();
+
         EZMessage ezMessage = mapper.readValue(text, EZMessage.class);
         System.out.println(ezMessage.getAction());
+    }
+
+    @Test
+    public void testReservationJson() throws IOException {
+        String text = Util.fileToString("Reservation.json");
+//        System.out.println(text);
+        Reservation reservation = mapper.readValue(text, Reservation.class);
+        System.out.println("HotelCode: "+reservation.getHotelReservation().getHotel().getCode());
+        reservation.getHotelReservation().getGuests().forEach(guest -> System.out.println(guest.getPersonName()
+                .getGivenName()+":"+guest.getPersonName().getSurname()));
     }
 
     @Test

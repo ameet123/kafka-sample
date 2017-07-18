@@ -1,8 +1,12 @@
 package org.ameet.kafkasample;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -17,5 +21,16 @@ public class Util {
         } catch (InterruptedException e) {
             LOGGER.error("delay interrupted", e);
         }
+    }
+
+    public static String fileToString(String file){
+        URL url = Resources.getResource(file);
+        String text = null;
+        try {
+            text = Resources.toString(url, Charsets.UTF_8);
+        } catch (IOException e) {
+            LOGGER.error("ERR: reading file to string");
+        }
+        return text;
     }
 }

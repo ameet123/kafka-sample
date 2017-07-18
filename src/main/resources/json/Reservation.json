@@ -1,0 +1,107 @@
+{
+  "hotelReservation":{
+    "isForcedSell":false,
+    "resHolderId":-1,
+    "reservationIds":{
+      "extCfNumber":{
+        "number":"864442400",
+        "source":"IH"
+      }
+    },
+    "hotel":{
+      "code":"ATLFR",
+      "distribInfo":{
+        "chainCode":"HI",
+        "code":"ATLFR"
+      }
+    },
+    "roomStays":[
+      {
+        "paymentInfo":{
+          "paymentType":5,
+          "paymentCard":{
+            "cardCode":"MC",
+            "expireDate":"0520",
+            "cardHolderName":"Expedia VirtualCard",
+            "cardNumber":{
+              "token":"7541126897073968"
+            }
+          },
+          "paymentIntent":"Guarantee"
+        },
+        "stayHolderId":-1,
+        "roomRates":[
+          {
+            "roomTypeCode":"TQNN",
+            "ratePlanCode":"IDUVC",
+            "startDate":"2017-06-27",
+            "endDate":"2017-06-30",
+            "rates":[
+              {
+                "unitMultiplier":0,
+                "startDate":"2017-06-27",
+                "endDate":"2017-06-29",
+                "base":{
+                  "overrideInd":false,
+                  "amount":"108.5"
+                }
+              },
+              {
+                "unitMultiplier":0,
+                "startDate":"2017-06-29",
+                "endDate":"2017-06-30",
+                "base":{
+                  "overrideInd":false,
+                  "amount":"102.34"
+                }
+              }
+            ],
+            "guestCounts":[
+              {
+                "ageQualifyingCode":10,
+                "count":1,
+                "age":0
+              }
+            ],
+            "numberOfRooms":1,
+            "distribInfo":{
+              "bookingCode":"TQNNIDUVC"
+            }
+          }
+        ],
+        "comments":[
+          {
+            "type":"supplementary info",
+            "language":"EN",
+            "text":[
+              "Non-smoking",
+              "2 queen beds",
+              "Traveler:JeongsunAhnRoom 3/5",
+              "Bill only nghts bkd by Expedia to cc# @ ck-in gst ",
+              "pays incid",
+              "GDS RECORD LOCATOR -EH -864442400"
+            ]
+          }
+        ],
+        "telephones":[
+          {
+            "phoneLocationType":6,
+            "phoneNumber":"0001088201674"
+          }
+        ],
+        "actionStatus":"NS",
+        "id":0
+      }
+    ],
+    "guests":[
+      {
+        "id":-1,
+        "personName":{
+          "givenName":"HANKYU",
+          "surname":"LEE"
+        }
+      }
+    ],
+    "isPaidByPoint":false
+  }
+}

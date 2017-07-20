@@ -1,0 +1,18 @@
+{
+  "metadata": {
+    "operationName": "createReservationRequest",
+    "hotelCodes": [
+      "WASSV"
+    ],
+    "serviceName": "ReservationService",
+    "transactionId": "dKern-6c1e5c74-c6f9-4707-88f7-1df69748d706",
+    "channelId": "WEBWB",
+    "requestorId": "WEBWB",
+    "createdTimestamp": "2017-07-19T15:05:59.151-04:00",
+    "targetSystem": "HDX",
+    "type": "REQUEST",
+    "routing": "DUAL_HDXSOR",
+    "messageId": "ID-localhost-45805-1500482256515-10921-1"
+  },
+  "rawData": "eAFVU9tuozAQfa/Uf7D8zgIpuRAZVwSySdRcWiAX7RuLnRRtgKxxqvL3OzY02SIBM2fmnLlgyPNncUYfXNR5VXrY/mFhxMusYnl58vA2+WmM8DN9fCDT8oOfqwunZM4EJRuRn+KmptNJTMwvR6PBe1rS/XSyn7QB7euIf7n8H1CuxpO84LRn2UPDGhq2m9j9sdUf992x7fQMyxlbVquk80jIa6k15+GBmDdP40ryBmt9P5MwGJ3Lc8Tr6I2YHUBW9WnHBYWBidnZCluElL1wURqDzOb9bOgY2eDoGs4QWhuNjtAfOw7coTNiQ2ugmcBQxFXFOI2bMtOg9tTOaALtElNZ5DVtzlXKkoYeVkti3l1i6p12AGy46xYom5iSWGQo+ltLsQg9rDeLkX+SoQyYh18jjEwKaiqzJVICs8YyldeaBlVR5NDAHSEQaRA8hPTwfesYTUuQ+wJ6NtRg1zPkgBW852cIwtmYVNUfVTaIk9liFmygelQEZZsGu1UxP9YtQTMIboXs/TjeaXAmORwh9YRpUZAKpuI7YCh7/Vt42LG/X9DZ5yWECpZrj7QIUJMGJY2izg7t/J1wLWuQryVapwX38MqPXjCKr6J19/5yOdlGs46ik33GBHDUCyZmy9L28BOKfOg3yGUD4yRLf534IAMrBc0ZmL/yC2RZT7YLWdW1lAIStzFEQCIBG/YC1rpoW0DfC6taUNL8+lydEb2p79geErBuf9zjwz/gfhre"
+}

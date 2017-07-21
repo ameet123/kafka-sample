@@ -1,6 +1,7 @@
 package org.ameet.kafkasample.config;
 
-import org.ameet.kafkasample.service.EZMessageProcessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.ameet.kafkasample.service.MessageProcessor;
 import org.ameet.kafkasample.service.MessageType;
 import org.ameet.kafkasample.service.MessageTypeDetectionService;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -23,6 +24,7 @@ import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,7 +46,7 @@ public class AppConfig {
     @Value(value = "${topic.simple.name}")
     private String simpleTopic;
     @Autowired
-    private EZMessageProcessor ezMessageProcessor;
+    private MessageProcessor messageProcessor;
     @Autowired
     private MessageTypeDetectionService messageTypeDetectionService;
 
@@ -104,5 +106,25 @@ public class AppConfig {
         LOGGER.info(">>>>>>>[part-{}]: Received Messasge in group:{}   ", partition, simpleGroup);
         MessageType type = messageTypeDetectionService.detectMessageType(message);
         LOGGER.info("Message Type==>{}", type);
+    }
+
+    /**
+     * each work item is short lived . just do the work and get out, so threadpoolexecutor is better than simpletask
+     * executor
+     *
+     * @return
+     */
+    @Bean
+    public ThreadPoolTaskExecutor threadPoolExecutor(@Value("${app.rx.threadpool.max}") int maxSize) {
+        LOGGER.debug("Max pool size:{}", maxSize);
+        ThreadPoolTaskExecutor poolExecutor = new ThreadPoolTaskExecutor();
+        poolExecutor.setMaxPoolSize(maxSize);
+        poolExecutor.setThreadNamePrefix("RXbus-");
+        return poolExecutor;
+    }
+
+    @Bean
+    public ObjectMapper mapper() {
+        return new ObjectMapper();
     }
 }

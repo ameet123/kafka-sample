@@ -1,12 +1,10 @@
 package org.ameet.kafkasample.controller;
 
 import org.ameet.kafkasample.model.Greet;
-import org.ameet.kafkasample.service.EZMessageProcessor;
+import org.ameet.kafkasample.service.MessageProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import sun.reflect.generics.reflectiveObjects.LazyReflectiveObjectGenerator;
 
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -21,7 +19,7 @@ public class WelcomeController {
     Random random = new Random();
     private AtomicInteger index = new AtomicInteger(0);
     @Autowired
-    private EZMessageProcessor ezMessageProcessor;
+    private MessageProcessor messageProcessor;
 
     @RequestMapping("/greet")
     public Greet greet(@RequestParam(value = "content", defaultValue = "sup!") String greeting) {
@@ -35,9 +33,27 @@ public class WelcomeController {
         System.out.println("Sleeping for ..." + sleep + " BreakPoint @ = " + breakPoint);
 
         for (int i = 0; i < 10; i++) {
-            ezMessageProcessor.publish(Thread.currentThread().getName() + ":" + i);
+            messageProcessor.publish(Thread.currentThread().getName() + ":" + i);
             if (i == breakPoint) {
                 Thread.sleep(sleep);
+            }
+        }
+        return "Done.";
+    }
+
+    @RequestMapping("/publishX/{count}")
+    public String publishX(@PathVariable String count) throws InterruptedException {
+        int cnt = Integer.parseInt(count);
+        int breakPoint = 50;
+        int sleep = 1000 * (random.nextInt(5) + 1);
+        System.out.println("Sleeping for ..." + sleep + " BreakPoint @ = " + breakPoint);
+
+        for (int i = 0; i < cnt; i++) {
+            messageProcessor.publish(Thread.currentThread().getName() + ":" + i);
+            if (i == breakPoint) {
+                System.out.println("-----*** Sleeping");
+                Thread.sleep(sleep);
+                System.out.println("-----** awake...");
             }
         }
         return "Done.";

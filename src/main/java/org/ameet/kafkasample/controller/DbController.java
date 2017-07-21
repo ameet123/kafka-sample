@@ -31,11 +31,6 @@ public class DbController {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private MetadataRepository metadataRepository;
-    @PersistenceContext
-    private EntityManager em;
-
-    @Autowired
     private MetadataDAO metadataDAO;
 
     @GetMapping(path = "/addUser")
@@ -60,17 +55,10 @@ public class DbController {
             return "Unmarshal error";
         }
         LOGGER.debug("----->{}", kafkaMessage.getMessageMetadata().getChannelId());
-//        metadataRepository.save(kafkaMessage.getMessageMetadata());
-//        em.persist(kafkaMessage.getMessageMetadata());
-//        em.flush();
-//        em.clear();
 
         List<MessageMetadata> messageMetadataList = new ArrayList<>();
         messageMetadataList.add(kafkaMessage.getMessageMetadata());
         metadataDAO.batchInsertByTemplate(messageMetadataList);
-
-
-
 
         return "Saved:" + kafkaMessage.getMessageMetadata().getMessageId();
     }

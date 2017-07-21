@@ -16,6 +16,7 @@ public class MessageTypeDetectionService {
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageTypeDetectionService.class);
     private static final Pattern RESERV_PATTERN = Pattern.compile("(?=.*\\{.*)(?=hotelReservation)", Pattern.DOTALL);
     private static final Pattern EZ_REFRESH_PATTERN = Pattern.compile("(?=.*\\{.*)(?=Refresh)", Pattern.DOTALL);
+    private static final Pattern METADATA_PATTERN = Pattern.compile("(?=.*\\{.*)(?=metadata)", Pattern.DOTALL);
 
     public MessageType detectMessageType(String message) {
         MessageType type = null;
@@ -25,6 +26,8 @@ public class MessageTypeDetectionService {
             type = MessageType.HOTEL_RESERVATION;
         } else if (isEZRefresh(message)) {
             type = MessageType.EZ_REFRESH;
+        } else if (isMetadata(message)) {
+            type = MessageType.METADATA;
         }
         return type;
     }
@@ -41,4 +44,7 @@ public class MessageTypeDetectionService {
         return EZ_REFRESH_PATTERN.matcher(message).find();
     }
 
+    private boolean isMetadata(String message) {
+        return METADATA_PATTERN.matcher(message).find();
+    }
 }

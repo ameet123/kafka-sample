@@ -74,6 +74,12 @@ public class MessagingController {
         kafkaProcessor.submitXMLSample();
         return "XML Message sent";
     }
+    @RequestMapping("/submitMetadata")
+    public String submitMetadata( ) {
+        LOGGER.debug(">> metadata sent");
+        kafkaProcessor.submitMetadata();
+        return "metadata sent";
+    }
 
     @RequestMapping("/metrics")
     public Map<String, Double> metrics() {

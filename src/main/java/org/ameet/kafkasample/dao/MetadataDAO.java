@@ -5,6 +5,7 @@ import org.ameet.kafkasample.model.MessageMetadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -27,12 +28,16 @@ public class MetadataDAO {
             "message_id, operation_name, requestor_id, routing, service_name, target_system, transaction_id, type) " +
             "VALUES " +
             "(?,?,?,?,?,?,?,?,?)";
-    private static final int METADATA_BATCH_SIZE = 10;
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
+    private int dbBatchSize;
     @PersistenceContext
     private EntityManager em;
+
+    @Autowired
+    public MetadataDAO(JdbcTemplate jdbcTemplate, @Value("${db.batch.size}") int dbBatchSize) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.dbBatchSize = dbBatchSize;
+    }
 
     @Transactional
     public void batchInsertByEm(List<MessageMetadata> metadataList) {
@@ -40,7 +45,7 @@ public class MetadataDAO {
 
         for (int i = 0; i < metadataList.size(); i++) {
             em.persist(metadataList.get(i));
-            if (i % METADATA_BATCH_SIZE == 0) {
+            if (i % dbBatchSize == 0) {
                 em.flush();
                 em.clear();
             }
@@ -69,7 +74,7 @@ public class MetadataDAO {
 
             @Override
             public int getBatchSize() {
-                return METADATA_BATCH_SIZE;
+                return dbBatchSize;
             }
         });
         LOGGER.debug("Metadata batch insert via template # records:{} in -> {}", metadataList.size(), stopwatch.stop());

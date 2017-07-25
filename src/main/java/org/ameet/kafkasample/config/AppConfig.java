@@ -103,9 +103,8 @@ public class AppConfig {
 
     @KafkaListener(topics = "${topic.simple.name}", group = "${group.simple}")
     public void listen(@Payload String message, @Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition) {
-        LOGGER.info(">>>>>>>[part-{}]: Received Messasge in group:{}   ", partition, simpleGroup);
+        LOGGER.trace(">>>>>>>[part-{}]: Received Messasge in group:{}   ", partition, simpleGroup);
         MessageType type = messageTypeDetectionService.detectMessageType(message);
-        LOGGER.info("Message Type==>{}", type);
     }
 
     /**

@@ -91,6 +91,16 @@ public class MessagingController {
         return "metadata sent";
     }
 
+    @RequestMapping("/submitMetadataX/{count}")
+    public String submitMetadataX(@PathVariable int count) {
+        Stopwatch stopwatch = Stopwatch.createStarted();
+        LOGGER.debug(">> kafka submit metadata-[{}] received", count);
+        for (int i = 0; i < count; i++) {
+            kafkaProcessor.submitMetadata();
+        }
+        return "metadata-X submitted to kafka:" + count;
+    }
+
     @RequestMapping("/publishMetadata")
     public String publishMetadata() {
         LOGGER.debug("[{}] REST call received.", Thread.currentThread().getName());

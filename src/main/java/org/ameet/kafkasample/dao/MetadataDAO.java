@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -53,20 +54,28 @@ public class MetadataDAO {
 
     @Transactional
     public void batchInsertByTemplate(List<MessageMetadata> metadataList) {
+        if (metadataList == null || metadataList.size() == 0) {
+            LOGGER.warn("JDBC Batch insert: incoming data null/zero, returning");
+            return;
+        }
         Stopwatch stopwatch = Stopwatch.createStarted();
-        jdbcTemplate.batchUpdate(INSERT_SQL, metadataList, dbBatchSize,
-                (ps, metadata) -> {
-                    ps.setObject(1, metadata.getChannelId());
-                    ps.setObject(2, metadata.getCreatedTimestamp());
-                    ps.setString(3, metadata.getMessageId());
-                    ps.setString(4, metadata.getOperationName());
-                    ps.setString(5, metadata.getRequestorId());
-                    ps.setString(6, metadata.getRouting());
-                    ps.setString(7, metadata.getServiceName());
-                    ps.setString(8, metadata.getTargetSystem());
-                    ps.setString(9, metadata.getTransactionId());
-                    ps.setString(10, metadata.getType());
-                });
+        try {
+            jdbcTemplate.batchUpdate(INSERT_SQL, metadataList, dbBatchSize,
+                    (ps, metadata) -> {
+                        ps.setObject(1, metadata.getChannelId());
+                        ps.setObject(2, metadata.getCreatedTimestamp());
+                        ps.setString(3, metadata.getMessageId());
+                        ps.setString(4, metadata.getOperationName());
+                        ps.setString(5, metadata.getRequestorId());
+                        ps.setString(6, metadata.getRouting());
+                        ps.setString(7, metadata.getServiceName());
+                        ps.setString(8, metadata.getTargetSystem());
+                        ps.setString(9, metadata.getTransactionId());
+                        ps.setString(10, metadata.getType());
+                    });
+        } catch (DataAccessException e) {
+            LOGGER.error("ERR: jdbc error inserting batch", e);
+        }
         LOGGER.debug("Metadata batch insert via template # records:{} in -> {}", metadataList.size(), stopwatch.stop());
     }
 }

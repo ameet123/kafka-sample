@@ -2,6 +2,7 @@ package org.ameet.kafkasample.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.regex.Pattern;
@@ -17,6 +18,8 @@ public class MessageTypeDetectionService {
     private static final Pattern RESERV_PATTERN = Pattern.compile("(?=.*\\{.*)(?=hotelReservation)", Pattern.DOTALL);
     private static final Pattern EZ_REFRESH_PATTERN = Pattern.compile("(?=.*\\{.*)(?=Refresh)", Pattern.DOTALL);
     private static final Pattern METADATA_PATTERN = Pattern.compile("(?=.*\\{.*)(?=metadata)", Pattern.DOTALL);
+    @Autowired
+    private MessageProcessor messageProcessor;
 
     public MessageType detectMessageType(String message) {
         MessageType type = null;
@@ -27,7 +30,9 @@ public class MessageTypeDetectionService {
         } else if (isEZRefresh(message)) {
             type = MessageType.EZ_REFRESH;
         } else if (isMetadata(message)) {
+            LOGGER.trace("Message Type==>{}", type);
             type = MessageType.METADATA;
+            messageProcessor.publishMetadata(message);
         }
         return type;
     }

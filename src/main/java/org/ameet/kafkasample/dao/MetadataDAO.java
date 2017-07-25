@@ -42,10 +42,10 @@ public class MetadataDAO {
     @Transactional
     public void batchInsertByEm(List<MessageMetadata> metadataList) {
         Stopwatch stopwatch = Stopwatch.createStarted();
-
         for (int i = 0; i < metadataList.size(); i++) {
             em.persist(metadataList.get(i));
             if (i % dbBatchSize == 0) {
+                LOGGER.debug(">> DAO-> flushing batch");
                 em.flush();
                 em.clear();
             }

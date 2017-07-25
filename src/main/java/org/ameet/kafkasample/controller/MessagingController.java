@@ -4,6 +4,8 @@ import com.google.common.base.Stopwatch;
 import org.ameet.kafkasample.model.KMessage;
 import org.ameet.kafkasample.model.SubmitStatus;
 import org.ameet.kafkasample.service.KafkaProcessor;
+import org.ameet.kafkasample.service.MessageProcessor;
+import org.ameet.kafkasample.service.SampleMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +30,15 @@ public class MessagingController {
     private static final String TEMPLATE = "howdy %s!";
     private final KafkaProcessor kafkaProcessor;
     private AtomicInteger index = new AtomicInteger(0);
+    private SampleMessageService sampleMessageService;
+    private MessageProcessor messageProcessor;
 
     @Autowired
-    public MessagingController(KafkaProcessor kafkaProcessor) {
+    public MessagingController(KafkaProcessor kafkaProcessor, SampleMessageService sampleMessageService,
+                               MessageProcessor messageProcessor) {
         this.kafkaProcessor = kafkaProcessor;
+        this.sampleMessageService = sampleMessageService;
+        this.messageProcessor = messageProcessor;
     }
 
     @RequestMapping("/submit/{content}")
@@ -57,28 +64,49 @@ public class MessagingController {
     }
 
     @RequestMapping("/submitEz")
-    public String submitEZ( ) {
+    public String submitEZ() {
         LOGGER.debug(">> EZ sent");
         kafkaProcessor.submitEzSample();
         return "EZ Message sent";
     }
+
     @RequestMapping("/submitJsonReserv")
-    public String submitReservation( ) {
+    public String submitReservation() {
         LOGGER.debug(">> Reserve JSON sent");
         kafkaProcessor.submitJsonReservationSample();
         return "Reservation JSON Message sent";
     }
+
     @RequestMapping("/submitXml")
-    public String submitXml( ) {
+    public String submitXml() {
         LOGGER.debug(">> Xml sent");
         kafkaProcessor.submitXMLSample();
         return "XML Message sent";
     }
+
     @RequestMapping("/submitMetadata")
-    public String submitMetadata( ) {
+    public String submitMetadata() {
         LOGGER.debug(">> metadata sent");
         kafkaProcessor.submitMetadata();
         return "metadata sent";
+    }
+
+    @RequestMapping("/publishMetadata")
+    public String publishMetadata() {
+        LOGGER.debug("[{}] REST call received.", Thread.currentThread().getName());
+        messageProcessor.publishMetadata(sampleMessageService.getMETADATA());
+        return "metadata published";
+    }
+
+    @RequestMapping("/publishMetadataX/{count}")
+    public String publishMetadataX(@PathVariable int count) {
+        Stopwatch stopwatch = Stopwatch.createStarted();
+        LOGGER.debug("[{}] Metadata-X call received.", Thread.currentThread().getName());
+        for (int i = 0; i < count; i++) {
+            messageProcessor.publishMetadata(sampleMessageService.getMETADATA());
+        }
+        LOGGER.debug("Metadata-X completed publishing in:{}", stopwatch);
+        return "metadata published->" + count + " in " + stopwatch.stop();
     }
 
     @RequestMapping("/metrics")

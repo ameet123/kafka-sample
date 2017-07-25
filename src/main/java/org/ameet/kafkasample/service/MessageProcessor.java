@@ -1,7 +1,9 @@
 package org.ameet.kafkasample.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.ameet.kafkasample.dao.MetadataDAO;
 import org.ameet.kafkasample.model.KafkaMessage;
+import org.ameet.kafkasample.model.MessageMetadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +32,9 @@ import java.util.concurrent.TimeUnit;
 public class MessageProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageProcessor.class);
     private SerializedSubject<String, String> safeSource;
-    private SerializedSubject<KafkaMessage, KafkaMessage> safeKafkaMessageSource;
+    private SerializedSubject<MessageMetadata, MessageMetadata> safeKafkaMessageSource;
     private ObjectMapper mapper;
+    private MetadataDAO metadataDAO;
 
     /**
      * we set up the stream here on constructor, which is a Subscriber as an Oservable
@@ -41,9 +44,11 @@ public class MessageProcessor {
      * @param taskExecutor
      */
     @Autowired
-    public MessageProcessor(ThreadPoolTaskExecutor taskExecutor, ObjectMapper mapper,
+    public MessageProcessor(ThreadPoolTaskExecutor taskExecutor, ObjectMapper mapper, MetadataDAO metadataDAO,
                             @Value("${app.observable.buffer.size}") int bufferSize,
                             @Value("${app.observable.buffer.window.span.sec}") int bufferSpanSeconds) {
+        LOGGER.debug("buffer size:{} windowTimeSec:{}", bufferSize, bufferSpanSeconds);
+        this.metadataDAO = metadataDAO;
         this.mapper = mapper;
         safeSource = PublishSubject.<String>create().toSerialized();
         safeSource
@@ -64,23 +69,20 @@ public class MessageProcessor {
 
                     @Override
                     public void onNext(List<String> strings) {
+                        if (strings == null || strings.size() == 0) {
+                            return;
+                        }
+                        LOGGER.debug(">>>>> Arrived on Bus on:{}", Thread.currentThread().getName());
                         Observable.just(strings).observeOn(Schedulers.newThread())
                                 .subscribe(strings1 -> LOGGER.debug(">> Batch size={}", strings1.size()));
-//                        try {
-//                            Thread.sleep(20000);
-//                        } catch (InterruptedException e) {
-//                            e.printStackTrace();
-//                        }
-//                        LOGGER.debug(">>> Batch size:{}", strings.size());
                     }
                 });
         // create subject for kafka message with similar characteristics as above
-        safeKafkaMessageSource = PublishSubject.<KafkaMessage>create().toSerialized();
+        safeKafkaMessageSource = PublishSubject.<MessageMetadata>create().toSerialized();
         safeKafkaMessageSource
                 .buffer(bufferSpanSeconds, TimeUnit.SECONDS, bufferSize)
                 .onBackpressureBuffer(bufferSize * 2)
-                .observeOn(Schedulers.from(taskExecutor))
-                .subscribe(new Subscriber<List<KafkaMessage>>() {
+                .subscribe(new Subscriber<List<MessageMetadata>>() {
                     @Override
                     public void onCompleted() {
                         LOGGER.debug("Batch completed..");
@@ -92,32 +94,67 @@ public class MessageProcessor {
                     }
 
                     @Override
-                    public void onNext(List<KafkaMessage> strings) {
-                        Observable.just(strings).observeOn(Schedulers.newThread())
-                                .subscribe(strings1 -> LOGGER.debug(">> Batch size={}", strings1.size()));
+                    public void onNext(List<MessageMetadata> kafkaMessageList) {
+                        if (kafkaMessageList == null || kafkaMessageList.size() == 0) {
+                            LOGGER.trace("## Null/Zero Arrived on Bus on:{}", Thread.currentThread().getName());
+                            return;
+                        }
+                        LOGGER.debug(">>>>> Arrived on Bus on:{}", Thread.currentThread().getName());
+                        Observable.just(kafkaMessageList).observeOn(Schedulers.newThread())
+                                .subscribe(strings1 -> {
+                                    LOGGER.debug(">> Batch size={}", strings1.size());
+                                    metadataDAO.batchInsertByEm(kafkaMessageList);
+                                });
                     }
                 });
     }
 
-    public void publish(String s) {
-//        LOGGER.debug("[{}]... publishing now", Thread.currentThread().getName());
-//        safeSource.onNext(s);
+
+    public void publishMetadata(String s) {
+        LOGGER.trace("[{}]... publishing now", Thread.currentThread().getName());
         Observable.just(s).
-                flatMap(
-                        s1 ->
-                                Observable.just(s1)
-                                        .subscribeOn(Schedulers.computation())
-                                        .map(this::unmarshalMetadata))
-                .subscribe(kafkaMessage -> safeKafkaMessageSource.onNext(kafkaMessage));
+                flatMap(s1 -> Observable.just(s1)
+                        .subscribeOn(Schedulers.computation())
+                        .map(this::unmarshalMetadata))
+                .subscribe(kafkaMessage -> {
+                    LOGGER.trace(">>[{}] sent to Bus on->{}",
+                            Thread.currentThread().getName(), kafkaMessage.getMessageId());
+                    safeKafkaMessageSource.onNext(kafkaMessage);
+                });
+        LOGGER.trace(">>[{}]->Publishing completed", Thread.currentThread().getName());
     }
 
-    private KafkaMessage unmarshalMetadata(String s) {
+
+    private MessageMetadata unmarshalMetadata(String s) {
+        LOGGER.trace(">> Unmarshal on->{}", Thread.currentThread().getName());
         KafkaMessage kafkaMessage = null;
         try {
             kafkaMessage = mapper.readValue(s, KafkaMessage.class);
         } catch (IOException e) {
-            LOGGER.error("ERR: unmarshalling metadata json:\n{}\n", s);
+            LOGGER.error("ERR: unmarshalling metadata json{}:\n{}\n", e, s);
         }
-        return kafkaMessage;
+        return kafkaMessage.getMessageMetadata();
+    }
+
+    private String delayedStringProcessing(String s) {
+        try {
+            Thread.sleep(4000L);
+        } catch (InterruptedException e) {
+            LOGGER.error("Interrupted", e);
+        }
+        return s + "-" + Thread.currentThread().getName();
+    }
+
+    public void publish(String s) {
+        LOGGER.debug("[{}]... publishing now", Thread.currentThread().getName());
+        Observable.just(s).flatMap(s1 -> Observable.just(s1).
+                subscribeOn(Schedulers.computation()).
+                map(this::delayedStringProcessing)).
+                subscribe(s1 -> {
+                    LOGGER.info(">> sent to Bus on->{}", Thread.currentThread().getName());
+                    safeSource.onNext(s1);
+                });
+
+        LOGGER.debug(">>[{}]->Publishing completed", Thread.currentThread().getName());
     }
 }

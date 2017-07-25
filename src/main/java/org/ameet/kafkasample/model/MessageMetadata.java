@@ -181,4 +181,20 @@ public class MessageMetadata {
         this.additionalProperties.put(name, value);
     }
 
+    @Override
+    public String toString() {
+        return "MessageMetadata{" +
+                "id=" + id +
+                ", operationName='" + operationName + '\'' +
+                ", serviceName='" + serviceName + '\'' +
+                ", transactionId='" + transactionId + '\'' +
+                ", channelId='" + channelId + '\'' +
+                ", requestorId='" + requestorId + '\'' +
+                ", createdTimestamp=" + createdTimestamp +
+                ", targetSystem='" + targetSystem + '\'' +
+                ", type='" + type + '\'' +
+                ", routing='" + routing + '\'' +
+                ", messageId='" + messageId + '\'' +
+                '}';
+    }
 }

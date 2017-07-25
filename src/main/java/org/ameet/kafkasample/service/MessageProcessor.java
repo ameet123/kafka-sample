@@ -103,7 +103,7 @@ public class MessageProcessor {
                         Observable.just(kafkaMessageList).observeOn(Schedulers.newThread())
                                 .subscribe(strings1 -> {
                                     LOGGER.debug(">> Batch size={}", strings1.size());
-                                    metadataDAO.batchInsertByEm(kafkaMessageList);
+                                    metadataDAO.batchInsertByTemplate(kafkaMessageList);
                                 });
                     }
                 });

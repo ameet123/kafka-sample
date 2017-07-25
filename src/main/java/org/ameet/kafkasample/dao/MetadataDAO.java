@@ -6,15 +6,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -24,10 +21,10 @@ import java.util.List;
 @Component
 public class MetadataDAO {
     private static final Logger LOGGER = LoggerFactory.getLogger(MetadataDAO.class);
-    private static final String INSERT_SQL = "INSERT INTO message_metadata(created_timestamp," +
+    private static final String INSERT_SQL = "INSERT INTO message_metadata(channel_id, created_timestamp," +
             "message_id, operation_name, requestor_id, routing, service_name, target_system, transaction_id, type) " +
             "VALUES " +
-            "(?,?,?,?,?,?,?,?,?)";
+            "(?,?,?,?,?,?,?,?,?,?)";
     private final JdbcTemplate jdbcTemplate;
     private int dbBatchSize;
     @PersistenceContext
@@ -50,33 +47,26 @@ public class MetadataDAO {
                 em.clear();
             }
         }
-        LOGGER.debug("Metadata batch insert via EntityManager. # records:{} in -> {}", metadataList.size(), stopwatch
+        LOGGER.debug("Metadata batch insert via EntityManager # records:{} in -> {}", metadataList.size(), stopwatch
                 .stop());
     }
 
     @Transactional
     public void batchInsertByTemplate(List<MessageMetadata> metadataList) {
         Stopwatch stopwatch = Stopwatch.createStarted();
-        jdbcTemplate.batchUpdate(INSERT_SQL, new BatchPreparedStatementSetter() {
-            @Override
-            public void setValues(PreparedStatement ps, int i) throws SQLException {
-                ps.setObject(1, metadataList.get(i).getCreatedTimestamp());
-                ps.setString(2, metadataList.get(i).getMessageId());
-                ps.setString(3, metadataList.get(i).getOperationName());
-                ps.setString(4, metadataList.get(i).getRequestorId());
-                ps.setString(5, metadataList.get(i).getRouting());
-
-                ps.setString(6, metadataList.get(i).getServiceName());
-                ps.setString(7, metadataList.get(i).getTargetSystem());
-                ps.setString(8, metadataList.get(i).getTransactionId());
-                ps.setString(9, metadataList.get(i).getType());
-            }
-
-            @Override
-            public int getBatchSize() {
-                return dbBatchSize;
-            }
-        });
+        jdbcTemplate.batchUpdate(INSERT_SQL, metadataList, dbBatchSize,
+                (ps, metadata) -> {
+                    ps.setObject(1, metadata.getChannelId());
+                    ps.setObject(2, metadata.getCreatedTimestamp());
+                    ps.setString(3, metadata.getMessageId());
+                    ps.setString(4, metadata.getOperationName());
+                    ps.setString(5, metadata.getRequestorId());
+                    ps.setString(6, metadata.getRouting());
+                    ps.setString(7, metadata.getServiceName());
+                    ps.setString(8, metadata.getTargetSystem());
+                    ps.setString(9, metadata.getTransactionId());
+                    ps.setString(10, metadata.getType());
+                });
         LOGGER.debug("Metadata batch insert via template # records:{} in -> {}", metadataList.size(), stopwatch.stop());
     }
 }

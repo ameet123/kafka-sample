@@ -132,6 +132,7 @@ public class MessageProcessor {
             kafkaMessage = mapper.readValue(s, KafkaMessage.class);
         } catch (IOException e) {
             LOGGER.error("ERR: unmarshalling metadata json{}:\n{}\n", e, s);
+            return null;
         }
         return kafkaMessage.getMessageMetadata();
     }

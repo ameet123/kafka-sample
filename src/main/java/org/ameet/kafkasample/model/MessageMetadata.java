@@ -2,6 +2,7 @@ package org.ameet.kafkasample.model;
 
 /**
  * Created by ameet.chaubal on 7/20/2017.
+ * common json and hibernate class
  */
 
 import com.fasterxml.jackson.annotation.*;
@@ -27,7 +28,6 @@ import java.util.Map;
         "messageId"
 })
 @Entity
-//@Table(name = "message_metadata")
 public class MessageMetadata {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

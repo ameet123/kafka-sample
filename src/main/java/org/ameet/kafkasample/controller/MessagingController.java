@@ -113,7 +113,7 @@ public class MessagingController {
         Stopwatch stopwatch = Stopwatch.createStarted();
         LOGGER.debug("[{}] Metadata-X call received.", Thread.currentThread().getName());
         for (int i = 0; i < count; i++) {
-            messageProcessor.publishMetadata(sampleMessageService.getMETADATA());
+            messageProcessor.publishMetadata(sampleMessageService.getRandMetadata());
         }
         LOGGER.debug("Metadata-X completed publishing in:{}", stopwatch);
         return "metadata published->" + count + " in " + stopwatch.stop();

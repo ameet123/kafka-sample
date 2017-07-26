@@ -94,7 +94,7 @@ public class KafkaProcessor {
     }
 
     public void submitMetadata() {
-        LOGGER.debug("Topic:[{}] Sending metadata", simpleTopic);
+        LOGGER.trace("Topic:[{}] Sending metadata", simpleTopic);
         kafkaTemplate.send(simpleTopic, METADATA);
     }
 

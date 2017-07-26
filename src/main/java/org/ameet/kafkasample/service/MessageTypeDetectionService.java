@@ -23,16 +23,15 @@ public class MessageTypeDetectionService {
 
     public MessageType detectMessageType(String message) {
         MessageType type = null;
-        if (isXmlMessage(message)) {
+        if (isMetadata(message)) {
+            type = MessageType.METADATA;
+            messageProcessor.publishMetadata(message);
+        } else if (isXmlMessage(message)) {
             type = MessageType.XML;
         } else if (isJsonReservation(message)) {
             type = MessageType.HOTEL_RESERVATION;
         } else if (isEZRefresh(message)) {
             type = MessageType.EZ_REFRESH;
-        } else if (isMetadata(message)) {
-            LOGGER.trace("Message Type==>{}", type);
-            type = MessageType.METADATA;
-            messageProcessor.publishMetadata(message);
         }
         return type;
     }

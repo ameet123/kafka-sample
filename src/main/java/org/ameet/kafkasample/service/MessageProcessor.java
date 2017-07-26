@@ -96,10 +96,10 @@ public class MessageProcessor {
                     @Override
                     public void onNext(List<MessageMetadata> kafkaMessageList) {
                         if (kafkaMessageList == null || kafkaMessageList.size() == 0) {
-                            LOGGER.trace("## Null/Zero Arrived on Bus on:{}", Thread.currentThread().getName());
+//                            LOGGER.trace("## Null/Zero Arrived on Bus on:{}", Thread.currentThread().getName());
                             return;
                         }
-                        LOGGER.debug(">>>>> Arrived on Bus on:{}", Thread.currentThread().getName());
+                        LOGGER.trace(">>>>> Arrived on Bus on:{}", Thread.currentThread().getName());
                         Observable.just(kafkaMessageList).observeOn(Schedulers.newThread())
                                 .subscribe(strings1 -> {
                                     LOGGER.debug(">> Batch size={}", strings1.size());

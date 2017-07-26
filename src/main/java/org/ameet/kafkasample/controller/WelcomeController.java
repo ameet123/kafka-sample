@@ -4,7 +4,6 @@ import org.ameet.kafkasample.model.Greet;
 import org.ameet.kafkasample.service.MessageProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import sun.reflect.generics.reflectiveObjects.LazyReflectiveObjectGenerator;
 
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;

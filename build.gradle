@@ -1,6 +1,3 @@
-group 'org.ameet'
-version '1.0-SNAPSHOT'
-
 buildscript {
     repositories {
         mavenCentral()
@@ -13,6 +10,13 @@ buildscript {
     }
 }
 
+plugins {
+    id 'org.springframework.boot' version '1.5.4.RELEASE'
+}
+
+group 'org.ameet'
+version '1.0-SNAPSHOT'
+
 apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'idea'
@@ -24,7 +28,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 jar {
-    version = '0.1.1'
+    version = '0.1.2'
 }
 
 repositories {
@@ -70,7 +74,7 @@ jsonSchema2Pojo {
 
     // Target directory for generated Java source files. The plugin will add this directory to the
     // java source set so the compiler will find and compile the newly generated source files.
-    targetDirectory = file("/src/main/java")
+    targetDirectory = file("src/main/java")
 
     // Package name used for generated Java classes (for types where a fully qualified name has not
     // been supplied in the schema using the 'javaType' property).

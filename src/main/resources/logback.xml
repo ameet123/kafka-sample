@@ -13,12 +13,32 @@
         </encoder>
     </appender>
 
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/kafka-inspect.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>logs/kafka-inspect.%d{yyyy-MM-dd}.log</fileNamePattern>
+
+            <!-- keep 30 days' worth of history capped at 3GB total size -->
+            <maxHistory>7</maxHistory>
+            <totalSizeCap>2GB</totalSizeCap>
+
+        </rollingPolicy>
+        <encoder>
+            <charset>utf-8</charset>
+            <Pattern>${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p})
+                %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan}
+                %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}
+            </Pattern>
+        </encoder>
+    </appender>
+
     <logger name="org.springframework" level="INFO"/>
     <logger name="org.ameet" level="DEBUG"/>
     <logger name="org.apache.kafka" level="WARN"/>
     <logger name="org.springframework.boot.web.servlet" level="WARN"/>
     <logger name="org.springframework.web.servlet" level="WARN"/>
     <root level="INFO">
-        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
     </root>
 </configuration>

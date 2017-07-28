@@ -2,6 +2,7 @@ package org.ameet.kafkasample;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.base.Charsets;
+import com.google.common.base.Strings;
 import com.google.common.io.Resources;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,6 +42,10 @@ public class Util {
     }
 
     public static String decodeDeflate(String encoded) {
+        if (Strings.isNullOrEmpty(encoded)) {
+            LOGGER.error("ERR: encoded string is null or empty returning");
+            return "";
+        }
         byte[] decoded = Base64.getDecoder().decode(encoded);
         InflaterInputStream iis = new InflaterInputStream(new ByteArrayInputStream(decoded));
         StringBuilder result = new StringBuilder();
@@ -51,7 +56,8 @@ public class Util {
                 result.append(new String(Arrays.copyOf(buf, rlen)));
             }
         } catch (IOException e) {
-            LOGGER.error("Err reading encoded inflated string, returning original:{}\n{}", e.getMessage(), encoded);
+            LOGGER.error("Err reading encoded inflated string, returning original:{}\nLength of Encoded:{}\nOrig={}", e
+                    .getMessage(), encoded.length(), encoded);
             return encoded;
         }
         return result.toString();

@@ -15,17 +15,43 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "chainCode",
+    "brandCode",
     "code",
-    "distribInfo"
+    "propertyName"
 })
 public class Hotel {
 
+    @JsonProperty("chainCode")
+    private String chainCode;
+    @JsonProperty("brandCode")
+    private String brandCode;
     @JsonProperty("code")
     private String code;
-    @JsonProperty("distribInfo")
-    private DistribInfo distribInfo;
+    @JsonProperty("propertyName")
+    private String propertyName;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
+    @JsonProperty("chainCode")
+    public String getChainCode() {
+        return chainCode;
+    }
+
+    @JsonProperty("chainCode")
+    public void setChainCode(String chainCode) {
+        this.chainCode = chainCode;
+    }
+
+    @JsonProperty("brandCode")
+    public String getBrandCode() {
+        return brandCode;
+    }
+
+    @JsonProperty("brandCode")
+    public void setBrandCode(String brandCode) {
+        this.brandCode = brandCode;
+    }
 
     @JsonProperty("code")
     public String getCode() {
@@ -37,14 +63,14 @@ public class Hotel {
         this.code = code;
     }
 
-    @JsonProperty("distribInfo")
-    public DistribInfo getDistribInfo() {
-        return distribInfo;
+    @JsonProperty("propertyName")
+    public String getPropertyName() {
+        return propertyName;
     }
 
-    @JsonProperty("distribInfo")
-    public void setDistribInfo(DistribInfo distribInfo) {
-        this.distribInfo = distribInfo;
+    @JsonProperty("propertyName")
+    public void setPropertyName(String propertyName) {
+        this.propertyName = propertyName;
     }
 
     @Override
@@ -64,7 +90,7 @@ public class Hotel {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(code).append(distribInfo).append(additionalProperties).toHashCode();
+        return new HashCodeBuilder().append(chainCode).append(brandCode).append(code).append(propertyName).append(additionalProperties).toHashCode();
     }
 
     @Override
@@ -76,7 +102,7 @@ public class Hotel {
             return false;
         }
         Hotel rhs = ((Hotel) other);
-        return new EqualsBuilder().append(code, rhs.code).append(distribInfo, rhs.distribInfo).append(additionalProperties, rhs.additionalProperties).isEquals();
+        return new EqualsBuilder().append(chainCode, rhs.chainCode).append(brandCode, rhs.brandCode).append(code, rhs.code).append(propertyName, rhs.propertyName).append(additionalProperties, rhs.additionalProperties).isEquals();
     }
 
 }

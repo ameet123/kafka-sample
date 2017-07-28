@@ -8,6 +8,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 /**
  * Created by ameet.chaubal on 7/20/2017.
  */
-@RepositoryRestResource(exported = false)
-public interface MetadataRepository extends CrudRepository<MessageMetadata, Integer> {
-}
+//@RepositoryRestResource()
+//public interface MetadataRepository extends CrudRepository<MessageMetadata, Integer> {
+//}

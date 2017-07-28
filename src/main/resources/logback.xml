@@ -18,8 +18,6 @@
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
             <fileNamePattern>logs/kafka-inspect.%d{yyyy-MM-dd}.log</fileNamePattern>
-
-            <!-- keep 30 days' worth of history capped at 3GB total size -->
             <maxHistory>7</maxHistory>
             <totalSizeCap>2GB</totalSizeCap>
 
@@ -40,5 +38,6 @@
     <logger name="org.springframework.web.servlet" level="WARN"/>
     <root level="INFO">
         <appender-ref ref="FILE"/>
+        <appender-ref ref="CONSOLE"/>
     </root>
 </configuration>

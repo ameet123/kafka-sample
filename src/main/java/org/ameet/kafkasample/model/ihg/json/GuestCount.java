@@ -16,8 +16,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "ageQualifyingCode",
-    "count",
-    "age"
+    "count"
 })
 public class GuestCount {
 
@@ -25,8 +24,6 @@ public class GuestCount {
     private Integer ageQualifyingCode;
     @JsonProperty("count")
     private Integer count;
-    @JsonProperty("age")
-    private Integer age;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -50,16 +47,6 @@ public class GuestCount {
         this.count = count;
     }
 
-    @JsonProperty("age")
-    public Integer getAge() {
-        return age;
-    }
-
-    @JsonProperty("age")
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
@@ -77,7 +64,7 @@ public class GuestCount {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(ageQualifyingCode).append(count).append(age).append(additionalProperties).toHashCode();
+        return new HashCodeBuilder().append(ageQualifyingCode).append(count).append(additionalProperties).toHashCode();
     }
 
     @Override
@@ -89,7 +76,7 @@ public class GuestCount {
             return false;
         }
         GuestCount rhs = ((GuestCount) other);
-        return new EqualsBuilder().append(ageQualifyingCode, rhs.ageQualifyingCode).append(count, rhs.count).append(age, rhs.age).append(additionalProperties, rhs.additionalProperties).isEquals();
+        return new EqualsBuilder().append(ageQualifyingCode, rhs.ageQualifyingCode).append(count, rhs.count).append(additionalProperties, rhs.additionalProperties).isEquals();
     }
 
 }

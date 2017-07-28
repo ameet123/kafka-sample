@@ -16,15 +16,12 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "paymentType",
-    "paymentCard",
     "paymentIntent"
 })
 public class PaymentInfo {
 
     @JsonProperty("paymentType")
     private Integer paymentType;
-    @JsonProperty("paymentCard")
-    private PaymentCard paymentCard;
     @JsonProperty("paymentIntent")
     private String paymentIntent;
     @JsonIgnore
@@ -38,16 +35,6 @@ public class PaymentInfo {
     @JsonProperty("paymentType")
     public void setPaymentType(Integer paymentType) {
         this.paymentType = paymentType;
-    }
-
-    @JsonProperty("paymentCard")
-    public PaymentCard getPaymentCard() {
-        return paymentCard;
-    }
-
-    @JsonProperty("paymentCard")
-    public void setPaymentCard(PaymentCard paymentCard) {
-        this.paymentCard = paymentCard;
     }
 
     @JsonProperty("paymentIntent")
@@ -77,7 +64,7 @@ public class PaymentInfo {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(paymentType).append(paymentCard).append(paymentIntent).append(additionalProperties).toHashCode();
+        return new HashCodeBuilder().append(paymentType).append(paymentIntent).append(additionalProperties).toHashCode();
     }
 
     @Override
@@ -89,7 +76,7 @@ public class PaymentInfo {
             return false;
         }
         PaymentInfo rhs = ((PaymentInfo) other);
-        return new EqualsBuilder().append(paymentType, rhs.paymentType).append(paymentCard, rhs.paymentCard).append(paymentIntent, rhs.paymentIntent).append(additionalProperties, rhs.additionalProperties).isEquals();
+        return new EqualsBuilder().append(paymentType, rhs.paymentType).append(paymentIntent, rhs.paymentIntent).append(additionalProperties, rhs.additionalProperties).isEquals();
     }
 
 }

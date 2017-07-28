@@ -15,27 +15,17 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "givenName",
-    "surname"
+    "surname",
+    "givenName"
 })
 public class PersonName {
 
-    @JsonProperty("givenName")
-    private String givenName;
     @JsonProperty("surname")
     private String surname;
+    @JsonProperty("givenName")
+    private String givenName;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-
-    @JsonProperty("givenName")
-    public String getGivenName() {
-        return givenName;
-    }
-
-    @JsonProperty("givenName")
-    public void setGivenName(String givenName) {
-        this.givenName = givenName;
-    }
 
     @JsonProperty("surname")
     public String getSurname() {
@@ -45,6 +35,16 @@ public class PersonName {
     @JsonProperty("surname")
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    @JsonProperty("givenName")
+    public String getGivenName() {
+        return givenName;
+    }
+
+    @JsonProperty("givenName")
+    public void setGivenName(String givenName) {
+        this.givenName = givenName;
     }
 
     @Override
@@ -64,7 +64,7 @@ public class PersonName {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(givenName).append(surname).append(additionalProperties).toHashCode();
+        return new HashCodeBuilder().append(surname).append(givenName).append(additionalProperties).toHashCode();
     }
 
     @Override
@@ -76,7 +76,7 @@ public class PersonName {
             return false;
         }
         PersonName rhs = ((PersonName) other);
-        return new EqualsBuilder().append(givenName, rhs.givenName).append(surname, rhs.surname).append(additionalProperties, rhs.additionalProperties).isEquals();
+        return new EqualsBuilder().append(surname, rhs.surname).append(givenName, rhs.givenName).append(additionalProperties, rhs.additionalProperties).isEquals();
     }
 
 }

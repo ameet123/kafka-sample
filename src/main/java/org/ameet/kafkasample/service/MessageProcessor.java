@@ -1,6 +1,9 @@
 package org.ameet.kafkasample.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Strings;
+import org.ameet.kafkasample.Util;
 import org.ameet.kafkasample.dao.MetadataDAO;
 import org.ameet.kafkasample.model.KafkaMessage;
 import org.ameet.kafkasample.model.MessageMetadata;
@@ -31,7 +34,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class MessageProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageProcessor.class);
-    private SerializedSubject<String, String> safeSource;
+    private static final String CF_NUMBER_FIELD_NAME = "cfNumber";
     private SerializedSubject<MessageMetadata, MessageMetadata> safeKafkaMessageSource;
     private ObjectMapper mapper;
     private MetadataDAO metadataDAO;
@@ -50,34 +53,6 @@ public class MessageProcessor {
         LOGGER.debug("buffer size:{} windowTimeSec:{}", bufferSize, bufferSpanSeconds);
         this.metadataDAO = metadataDAO;
         this.mapper = mapper;
-        safeSource = PublishSubject.<String>create().toSerialized();
-        safeSource
-                .subscribeOn(Schedulers.newThread())
-                .buffer(bufferSpanSeconds, TimeUnit.SECONDS, bufferSize)
-                .onBackpressureBuffer(bufferSize * 2)
-                .observeOn(Schedulers.from(taskExecutor))
-                .subscribe(new Subscriber<List<String>>() {
-                    @Override
-                    public void onCompleted() {
-                        LOGGER.debug("Batch completed..");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        LOGGER.error("ERR: in batch processing", e);
-                    }
-
-                    @Override
-                    public void onNext(List<String> strings) {
-                        if (strings == null || strings.size() == 0) {
-                            return;
-                        }
-                        LOGGER.debug(">>>>> Arrived on Bus on:{}", Thread.currentThread().getName());
-                        Observable.just(strings).observeOn(Schedulers.newThread())
-                                .subscribe(strings1 -> LOGGER.debug(">> Batch size={}", strings1.size()));
-                    }
-                });
-        // create subject for kafka message with similar characteristics as above
         safeKafkaMessageSource = PublishSubject.<MessageMetadata>create().toSerialized();
         safeKafkaMessageSource
                 .buffer(bufferSpanSeconds, TimeUnit.SECONDS, bufferSize)
@@ -128,34 +103,34 @@ public class MessageProcessor {
     private MessageMetadata unmarshalMetadata(String s) {
         LOGGER.trace(">> Unmarshal on->{}", Thread.currentThread().getName());
         KafkaMessage kafkaMessage = null;
+        MessageMetadata messageMetadata = null;
         try {
             kafkaMessage = mapper.readValue(s, KafkaMessage.class);
+            messageMetadata = kafkaMessage.getMessageMetadata();
+            String cfNumber = getCfNumber(kafkaMessage.getRawData());
+            if (messageMetadata != null && !Strings.isNullOrEmpty(cfNumber)) {
+                messageMetadata.setCfNumber(cfNumber);
+            }
         } catch (IOException e) {
             LOGGER.error("ERR: unmarshalling metadata json{}:\n{}\n", e, s);
             return null;
         }
-        return kafkaMessage.getMessageMetadata();
+        return messageMetadata;
     }
 
-    private String delayedStringProcessing(String s) {
+
+    private String getCfNumber(String raw) {
+        String rawData = Util.decodeDeflate(raw);
+        String cfNumber = null;
         try {
-            Thread.sleep(4000L);
-        } catch (InterruptedException e) {
-            LOGGER.error("Interrupted", e);
+            JsonNode node = mapper.readTree(rawData);
+            JsonNode cfNode = Util.recursiveSearch(node, CF_NUMBER_FIELD_NAME);
+            if (cfNode != null) {
+                cfNumber = cfNode.asText();
+            }
+        } catch (IOException e) {
+//            LOGGER.error("ERR reading json tree from decoded message, probably not json", e);
         }
-        return s + "-" + Thread.currentThread().getName();
-    }
-
-    public void publish(String s) {
-        LOGGER.debug("[{}]... publishing now", Thread.currentThread().getName());
-        Observable.just(s).flatMap(s1 -> Observable.just(s1).
-                subscribeOn(Schedulers.computation()).
-                map(this::delayedStringProcessing)).
-                subscribe(s1 -> {
-                    LOGGER.info(">> sent to Bus on->{}", Thread.currentThread().getName());
-                    safeSource.onNext(s1);
-                });
-
-        LOGGER.debug(">>[{}]->Publishing completed", Thread.currentThread().getName());
+        return cfNumber;
     }
 }

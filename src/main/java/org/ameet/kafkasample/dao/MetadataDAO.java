@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -23,9 +24,14 @@ import java.util.List;
 public class MetadataDAO {
     private static final Logger LOGGER = LoggerFactory.getLogger(MetadataDAO.class);
     private static final String INSERT_SQL = "INSERT INTO message_metadata(channel_id, created_timestamp," +
-            "message_id, operation_name, requestor_id, routing, service_name, target_system, transaction_id, type) " +
+            "message_id, operation_name, requestor_id, routing, service_name, target_system, transaction_id, type, " +
+            "cf_number) " +
             "VALUES " +
-            "(?,?,?,?,?,?,?,?,?,?)";
+            "(?,?,?,?,?,?,?,?,?,?,?)";
+    private static final String DISTINCT_CHANNELS_SQL = "SELECT DISTINCT m.channel_Id FROM Message_Metadata m";
+    private static final String DISTINCT_SERVICE_SQL = "SELECT DISTINCT m.service_name FROM Message_Metadata m";
+    private static final String DISTINCT_ROUTING_SQL = "SELECT DISTINCT m.routing FROM Message_Metadata m";
+
     private final JdbcTemplate jdbcTemplate;
     private int dbBatchSize;
     @PersistenceContext
@@ -72,10 +78,34 @@ public class MetadataDAO {
                         ps.setString(8, metadata.getTargetSystem());
                         ps.setString(9, metadata.getTransactionId());
                         ps.setString(10, metadata.getType());
+                        ps.setString(11, metadata.getCfNumber());
                     });
         } catch (DataAccessException e) {
             LOGGER.error("ERR: jdbc error inserting batch", e);
         }
         LOGGER.debug("Metadata batch insert via template # records:{} in -> {}", metadataList.size(), stopwatch.stop());
+    }
+
+    /**
+     * since the query returns a single column, it needs to have List<Object> and not Object[]
+     * also Sqlresult mapping does not work unless it's an entity.
+     * @return
+     */
+    public List<Object> getDistinctChannels() {
+        return getSingleColumnStringSql(DISTINCT_CHANNELS_SQL);
+    }
+    public List<Object> getDistinctService() {
+        return getSingleColumnStringSql(DISTINCT_SERVICE_SQL);
+    }
+    public List<Object> getDistinctRouting() {
+        return getSingleColumnStringSql(DISTINCT_ROUTING_SQL);
+    }
+
+    private List<Object> getSingleColumnStringSql(String sql){
+        Query query = em.createNativeQuery(sql);
+        @SuppressWarnings("unchecked")
+        List<Object> results = query.getResultList();
+        LOGGER.debug("Single column query sql-Items # {}", results.size());
+        return results;
     }
 }

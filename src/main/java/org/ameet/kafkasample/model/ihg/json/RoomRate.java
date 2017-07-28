@@ -17,55 +17,44 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "roomTypeCode",
-    "ratePlanCode",
     "startDate",
     "endDate",
-    "rates",
-    "guestCounts",
+    "groupCode",
+    "roomTypeCode",
+    "ratePlanCode",
     "numberOfRooms",
-    "distribInfo"
+    "rates",
+    "ratesDefinitions",
+    "total",
+    "guestCounts",
+    "specialRateInd"
 })
 public class RoomRate {
 
-    @JsonProperty("roomTypeCode")
-    private String roomTypeCode;
-    @JsonProperty("ratePlanCode")
-    private String ratePlanCode;
     @JsonProperty("startDate")
     private String startDate;
     @JsonProperty("endDate")
     private String endDate;
-    @JsonProperty("rates")
-    private List<Rate> rates = new ArrayList<Rate>();
-    @JsonProperty("guestCounts")
-    private List<GuestCount> guestCounts = new ArrayList<GuestCount>();
+    @JsonProperty("groupCode")
+    private String groupCode;
+    @JsonProperty("roomTypeCode")
+    private String roomTypeCode;
+    @JsonProperty("ratePlanCode")
+    private String ratePlanCode;
     @JsonProperty("numberOfRooms")
     private Integer numberOfRooms;
-    @JsonProperty("distribInfo")
-    private DistribInfo_ distribInfo;
+    @JsonProperty("rates")
+    private List<Rate> rates = new ArrayList<Rate>();
+    @JsonProperty("ratesDefinitions")
+    private List<RatesDefinition> ratesDefinitions = new ArrayList<RatesDefinition>();
+    @JsonProperty("total")
+    private Total total;
+    @JsonProperty("guestCounts")
+    private List<GuestCount> guestCounts = new ArrayList<GuestCount>();
+    @JsonProperty("specialRateInd")
+    private String specialRateInd;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-
-    @JsonProperty("roomTypeCode")
-    public String getRoomTypeCode() {
-        return roomTypeCode;
-    }
-
-    @JsonProperty("roomTypeCode")
-    public void setRoomTypeCode(String roomTypeCode) {
-        this.roomTypeCode = roomTypeCode;
-    }
-
-    @JsonProperty("ratePlanCode")
-    public String getRatePlanCode() {
-        return ratePlanCode;
-    }
-
-    @JsonProperty("ratePlanCode")
-    public void setRatePlanCode(String ratePlanCode) {
-        this.ratePlanCode = ratePlanCode;
-    }
 
     @JsonProperty("startDate")
     public String getStartDate() {
@@ -87,24 +76,34 @@ public class RoomRate {
         this.endDate = endDate;
     }
 
-    @JsonProperty("rates")
-    public List<Rate> getRates() {
-        return rates;
+    @JsonProperty("groupCode")
+    public String getGroupCode() {
+        return groupCode;
     }
 
-    @JsonProperty("rates")
-    public void setRates(List<Rate> rates) {
-        this.rates = rates;
+    @JsonProperty("groupCode")
+    public void setGroupCode(String groupCode) {
+        this.groupCode = groupCode;
     }
 
-    @JsonProperty("guestCounts")
-    public List<GuestCount> getGuestCounts() {
-        return guestCounts;
+    @JsonProperty("roomTypeCode")
+    public String getRoomTypeCode() {
+        return roomTypeCode;
     }
 
-    @JsonProperty("guestCounts")
-    public void setGuestCounts(List<GuestCount> guestCounts) {
-        this.guestCounts = guestCounts;
+    @JsonProperty("roomTypeCode")
+    public void setRoomTypeCode(String roomTypeCode) {
+        this.roomTypeCode = roomTypeCode;
+    }
+
+    @JsonProperty("ratePlanCode")
+    public String getRatePlanCode() {
+        return ratePlanCode;
+    }
+
+    @JsonProperty("ratePlanCode")
+    public void setRatePlanCode(String ratePlanCode) {
+        this.ratePlanCode = ratePlanCode;
     }
 
     @JsonProperty("numberOfRooms")
@@ -117,14 +116,54 @@ public class RoomRate {
         this.numberOfRooms = numberOfRooms;
     }
 
-    @JsonProperty("distribInfo")
-    public DistribInfo_ getDistribInfo() {
-        return distribInfo;
+    @JsonProperty("rates")
+    public List<Rate> getRates() {
+        return rates;
     }
 
-    @JsonProperty("distribInfo")
-    public void setDistribInfo(DistribInfo_ distribInfo) {
-        this.distribInfo = distribInfo;
+    @JsonProperty("rates")
+    public void setRates(List<Rate> rates) {
+        this.rates = rates;
+    }
+
+    @JsonProperty("ratesDefinitions")
+    public List<RatesDefinition> getRatesDefinitions() {
+        return ratesDefinitions;
+    }
+
+    @JsonProperty("ratesDefinitions")
+    public void setRatesDefinitions(List<RatesDefinition> ratesDefinitions) {
+        this.ratesDefinitions = ratesDefinitions;
+    }
+
+    @JsonProperty("total")
+    public Total getTotal() {
+        return total;
+    }
+
+    @JsonProperty("total")
+    public void setTotal(Total total) {
+        this.total = total;
+    }
+
+    @JsonProperty("guestCounts")
+    public List<GuestCount> getGuestCounts() {
+        return guestCounts;
+    }
+
+    @JsonProperty("guestCounts")
+    public void setGuestCounts(List<GuestCount> guestCounts) {
+        this.guestCounts = guestCounts;
+    }
+
+    @JsonProperty("specialRateInd")
+    public String getSpecialRateInd() {
+        return specialRateInd;
+    }
+
+    @JsonProperty("specialRateInd")
+    public void setSpecialRateInd(String specialRateInd) {
+        this.specialRateInd = specialRateInd;
     }
 
     @Override
@@ -144,7 +183,7 @@ public class RoomRate {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(roomTypeCode).append(ratePlanCode).append(startDate).append(endDate).append(rates).append(guestCounts).append(numberOfRooms).append(distribInfo).append(additionalProperties).toHashCode();
+        return new HashCodeBuilder().append(startDate).append(endDate).append(groupCode).append(roomTypeCode).append(ratePlanCode).append(numberOfRooms).append(rates).append(ratesDefinitions).append(total).append(guestCounts).append(specialRateInd).append(additionalProperties).toHashCode();
     }
 
     @Override
@@ -156,7 +195,7 @@ public class RoomRate {
             return false;
         }
         RoomRate rhs = ((RoomRate) other);
-        return new EqualsBuilder().append(roomTypeCode, rhs.roomTypeCode).append(ratePlanCode, rhs.ratePlanCode).append(startDate, rhs.startDate).append(endDate, rhs.endDate).append(rates, rhs.rates).append(guestCounts, rhs.guestCounts).append(numberOfRooms, rhs.numberOfRooms).append(distribInfo, rhs.distribInfo).append(additionalProperties, rhs.additionalProperties).isEquals();
+        return new EqualsBuilder().append(startDate, rhs.startDate).append(endDate, rhs.endDate).append(groupCode, rhs.groupCode).append(roomTypeCode, rhs.roomTypeCode).append(ratePlanCode, rhs.ratePlanCode).append(numberOfRooms, rhs.numberOfRooms).append(rates, rhs.rates).append(ratesDefinitions, rhs.ratesDefinitions).append(total, rhs.total).append(guestCounts, rhs.guestCounts).append(specialRateInd, rhs.specialRateInd).append(additionalProperties, rhs.additionalProperties).isEquals();
     }
 
 }

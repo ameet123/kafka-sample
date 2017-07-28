@@ -25,7 +25,8 @@ import java.util.Map;
         "targetSystem",
         "type",
         "routing",
-        "messageId"
+        "messageId",
+        "cfNumber"
 })
 @Entity
 public class MessageMetadata {
@@ -58,8 +59,18 @@ public class MessageMetadata {
     @JsonProperty("messageId")
     private String messageId;
     @JsonIgnore
+    private String cfNumber;
+    @JsonIgnore
     @Transient
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
+    public String getCfNumber() {
+        return cfNumber;
+    }
+
+    public void setCfNumber(String cfNumber) {
+        this.cfNumber = cfNumber;
+    }
 
     @JsonProperty("operationName")
     public String getOperationName() {

@@ -22,10 +22,10 @@ public class SampleMessageService {
 
     public SampleMessageService() {
         METADATA = Util.fileToString("messageMetadata.json");
-        metadataList.add(METADATA);
+//        metadataList.add(METADATA);
         metadataList.add(Util.fileToString("messageMetadata-7-28.json"));
-        metadataList.add(Util.fileToString("messageMetadata-8-5.json"));
-        metadataList.add(Util.fileToString("messageMetadata-8-14.json"));
+//        metadataList.add(Util.fileToString("messageMetadata-8-5.json"));
+//        metadataList.add(Util.fileToString("messageMetadata-8-14.json"));
     }
 
     public String getRandMetadata() {

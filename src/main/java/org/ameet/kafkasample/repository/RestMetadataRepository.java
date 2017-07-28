@@ -2,6 +2,8 @@ package org.ameet.kafkasample.repository;
 
 
 import org.ameet.kafkasample.model.MessageMetadata;
+import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
@@ -15,7 +17,7 @@ import java.util.List;
  * Created by ameet.chaubal on 7/20/2017.
  * queries for searching via REST
  */
-@RepositoryRestResource(path = "metadata")
+@RepositoryRestResource(path = "metadata", exported = true)
 public interface RestMetadataRepository extends PagingAndSortingRepository<MessageMetadata, Integer> {
     @RestResource(path = "findTxnId")
     List<MessageMetadata> findByTransactionId(@Param("transactionId") String transactionId);

@@ -1,9 +1,7 @@
 
 package org.ameet.kafkasample.model.ihg.json;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -17,30 +15,17 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "amount",
     "overrideInd",
-    "originalBaseRates"
+    "amount"
 })
 public class Base {
 
-    @JsonProperty("amount")
-    private String amount;
     @JsonProperty("overrideInd")
     private Boolean overrideInd;
-    @JsonProperty("originalBaseRates")
-    private List<OriginalBaseRate> originalBaseRates = new ArrayList<OriginalBaseRate>();
+    @JsonProperty("amount")
+    private String amount;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-
-    @JsonProperty("amount")
-    public String getAmount() {
-        return amount;
-    }
-
-    @JsonProperty("amount")
-    public void setAmount(String amount) {
-        this.amount = amount;
-    }
 
     @JsonProperty("overrideInd")
     public Boolean getOverrideInd() {
@@ -52,14 +37,14 @@ public class Base {
         this.overrideInd = overrideInd;
     }
 
-    @JsonProperty("originalBaseRates")
-    public List<OriginalBaseRate> getOriginalBaseRates() {
-        return originalBaseRates;
+    @JsonProperty("amount")
+    public String getAmount() {
+        return amount;
     }
 
-    @JsonProperty("originalBaseRates")
-    public void setOriginalBaseRates(List<OriginalBaseRate> originalBaseRates) {
-        this.originalBaseRates = originalBaseRates;
+    @JsonProperty("amount")
+    public void setAmount(String amount) {
+        this.amount = amount;
     }
 
     @Override
@@ -79,7 +64,7 @@ public class Base {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(amount).append(overrideInd).append(originalBaseRates).append(additionalProperties).toHashCode();
+        return new HashCodeBuilder().append(overrideInd).append(amount).append(additionalProperties).toHashCode();
     }
 
     @Override
@@ -91,7 +76,7 @@ public class Base {
             return false;
         }
         Base rhs = ((Base) other);
-        return new EqualsBuilder().append(amount, rhs.amount).append(overrideInd, rhs.overrideInd).append(originalBaseRates, rhs.originalBaseRates).append(additionalProperties, rhs.additionalProperties).isEquals();
+        return new EqualsBuilder().append(overrideInd, rhs.overrideInd).append(amount, rhs.amount).append(additionalProperties, rhs.additionalProperties).isEquals();
     }
 
 }

@@ -17,74 +17,35 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "startDate",
-    "endDate",
-    "groupCode",
     "roomTypeCode",
     "ratePlanCode",
-    "numberOfRooms",
+    "startDate",
+    "endDate",
     "rates",
-    "ratesDefinitions",
-    "total",
     "guestCounts",
-    "specialRateInd"
+    "numberOfRooms",
+    "distribInfo"
 })
 public class RoomRate {
 
-    @JsonProperty("startDate")
-    private String startDate;
-    @JsonProperty("endDate")
-    private String endDate;
-    @JsonProperty("groupCode")
-    private String groupCode;
     @JsonProperty("roomTypeCode")
     private String roomTypeCode;
     @JsonProperty("ratePlanCode")
     private String ratePlanCode;
-    @JsonProperty("numberOfRooms")
-    private Integer numberOfRooms;
+    @JsonProperty("startDate")
+    private String startDate;
+    @JsonProperty("endDate")
+    private String endDate;
     @JsonProperty("rates")
     private List<Rate> rates = new ArrayList<Rate>();
-    @JsonProperty("ratesDefinitions")
-    private List<RatesDefinition> ratesDefinitions = new ArrayList<RatesDefinition>();
-    @JsonProperty("total")
-    private Total total;
     @JsonProperty("guestCounts")
     private List<GuestCount> guestCounts = new ArrayList<GuestCount>();
-    @JsonProperty("specialRateInd")
-    private String specialRateInd;
+    @JsonProperty("numberOfRooms")
+    private Integer numberOfRooms;
+    @JsonProperty("distribInfo")
+    private DistribInfo_ distribInfo;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-
-    @JsonProperty("startDate")
-    public String getStartDate() {
-        return startDate;
-    }
-
-    @JsonProperty("startDate")
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
-
-    @JsonProperty("endDate")
-    public String getEndDate() {
-        return endDate;
-    }
-
-    @JsonProperty("endDate")
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
-    }
-
-    @JsonProperty("groupCode")
-    public String getGroupCode() {
-        return groupCode;
-    }
-
-    @JsonProperty("groupCode")
-    public void setGroupCode(String groupCode) {
-        this.groupCode = groupCode;
-    }
 
     @JsonProperty("roomTypeCode")
     public String getRoomTypeCode() {
@@ -106,14 +67,24 @@ public class RoomRate {
         this.ratePlanCode = ratePlanCode;
     }
 
-    @JsonProperty("numberOfRooms")
-    public Integer getNumberOfRooms() {
-        return numberOfRooms;
+    @JsonProperty("startDate")
+    public String getStartDate() {
+        return startDate;
     }
 
-    @JsonProperty("numberOfRooms")
-    public void setNumberOfRooms(Integer numberOfRooms) {
-        this.numberOfRooms = numberOfRooms;
+    @JsonProperty("startDate")
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    @JsonProperty("endDate")
+    public String getEndDate() {
+        return endDate;
+    }
+
+    @JsonProperty("endDate")
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
     }
 
     @JsonProperty("rates")
@@ -126,26 +97,6 @@ public class RoomRate {
         this.rates = rates;
     }
 
-    @JsonProperty("ratesDefinitions")
-    public List<RatesDefinition> getRatesDefinitions() {
-        return ratesDefinitions;
-    }
-
-    @JsonProperty("ratesDefinitions")
-    public void setRatesDefinitions(List<RatesDefinition> ratesDefinitions) {
-        this.ratesDefinitions = ratesDefinitions;
-    }
-
-    @JsonProperty("total")
-    public Total getTotal() {
-        return total;
-    }
-
-    @JsonProperty("total")
-    public void setTotal(Total total) {
-        this.total = total;
-    }
-
     @JsonProperty("guestCounts")
     public List<GuestCount> getGuestCounts() {
         return guestCounts;
@@ -156,14 +107,24 @@ public class RoomRate {
         this.guestCounts = guestCounts;
     }
 
-    @JsonProperty("specialRateInd")
-    public String getSpecialRateInd() {
-        return specialRateInd;
+    @JsonProperty("numberOfRooms")
+    public Integer getNumberOfRooms() {
+        return numberOfRooms;
     }
 
-    @JsonProperty("specialRateInd")
-    public void setSpecialRateInd(String specialRateInd) {
-        this.specialRateInd = specialRateInd;
+    @JsonProperty("numberOfRooms")
+    public void setNumberOfRooms(Integer numberOfRooms) {
+        this.numberOfRooms = numberOfRooms;
+    }
+
+    @JsonProperty("distribInfo")
+    public DistribInfo_ getDistribInfo() {
+        return distribInfo;
+    }
+
+    @JsonProperty("distribInfo")
+    public void setDistribInfo(DistribInfo_ distribInfo) {
+        this.distribInfo = distribInfo;
     }
 
     @Override
@@ -183,7 +144,7 @@ public class RoomRate {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(startDate).append(endDate).append(groupCode).append(roomTypeCode).append(ratePlanCode).append(numberOfRooms).append(rates).append(ratesDefinitions).append(total).append(guestCounts).append(specialRateInd).append(additionalProperties).toHashCode();
+        return new HashCodeBuilder().append(roomTypeCode).append(ratePlanCode).append(startDate).append(endDate).append(rates).append(guestCounts).append(numberOfRooms).append(distribInfo).append(additionalProperties).toHashCode();
     }
 
     @Override
@@ -195,7 +156,7 @@ public class RoomRate {
             return false;
         }
         RoomRate rhs = ((RoomRate) other);
-        return new EqualsBuilder().append(startDate, rhs.startDate).append(endDate, rhs.endDate).append(groupCode, rhs.groupCode).append(roomTypeCode, rhs.roomTypeCode).append(ratePlanCode, rhs.ratePlanCode).append(numberOfRooms, rhs.numberOfRooms).append(rates, rhs.rates).append(ratesDefinitions, rhs.ratesDefinitions).append(total, rhs.total).append(guestCounts, rhs.guestCounts).append(specialRateInd, rhs.specialRateInd).append(additionalProperties, rhs.additionalProperties).isEquals();
+        return new EqualsBuilder().append(roomTypeCode, rhs.roomTypeCode).append(ratePlanCode, rhs.ratePlanCode).append(startDate, rhs.startDate).append(endDate, rhs.endDate).append(rates, rhs.rates).append(guestCounts, rhs.guestCounts).append(numberOfRooms, rhs.numberOfRooms).append(distribInfo, rhs.distribInfo).append(additionalProperties, rhs.additionalProperties).isEquals();
     }
 
 }

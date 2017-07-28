@@ -17,89 +17,41 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "synchroNumber",
-    "id",
-    "startDate",
-    "endDate",
-    "stayHolderId",
-    "actionStatus",
     "paymentInfo",
+    "stayHolderId",
     "roomRates",
-    "total",
-    "totalBaseOccupancy",
-    "totalExtraOccupancy",
-    "factLines",
-    "consolidatedRoomStayStatus"
+    "comments",
+    "telephones",
+    "actionStatus",
+    "id"
 })
 public class RoomStay {
 
-    @JsonProperty("synchroNumber")
-    private Integer synchroNumber;
-    @JsonProperty("id")
-    private Integer id;
-    @JsonProperty("startDate")
-    private String startDate;
-    @JsonProperty("endDate")
-    private String endDate;
-    @JsonProperty("stayHolderId")
-    private Integer stayHolderId;
-    @JsonProperty("actionStatus")
-    private String actionStatus;
     @JsonProperty("paymentInfo")
     private PaymentInfo paymentInfo;
+    @JsonProperty("stayHolderId")
+    private Integer stayHolderId;
     @JsonProperty("roomRates")
     private List<RoomRate> roomRates = new ArrayList<RoomRate>();
-    @JsonProperty("total")
-    private Total_ total;
-    @JsonProperty("totalBaseOccupancy")
-    private TotalBaseOccupancy totalBaseOccupancy;
-    @JsonProperty("totalExtraOccupancy")
-    private TotalExtraOccupancy totalExtraOccupancy;
-    @JsonProperty("factLines")
-    private List<FactLine> factLines = new ArrayList<FactLine>();
-    @JsonProperty("consolidatedRoomStayStatus")
-    private String consolidatedRoomStayStatus;
+    @JsonProperty("comments")
+    private List<Comment> comments = new ArrayList<Comment>();
+    @JsonProperty("telephones")
+    private List<Telephone> telephones = new ArrayList<Telephone>();
+    @JsonProperty("actionStatus")
+    private String actionStatus;
+    @JsonProperty("id")
+    private Integer id;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    @JsonProperty("synchroNumber")
-    public Integer getSynchroNumber() {
-        return synchroNumber;
+    @JsonProperty("paymentInfo")
+    public PaymentInfo getPaymentInfo() {
+        return paymentInfo;
     }
 
-    @JsonProperty("synchroNumber")
-    public void setSynchroNumber(Integer synchroNumber) {
-        this.synchroNumber = synchroNumber;
-    }
-
-    @JsonProperty("id")
-    public Integer getId() {
-        return id;
-    }
-
-    @JsonProperty("id")
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    @JsonProperty("startDate")
-    public String getStartDate() {
-        return startDate;
-    }
-
-    @JsonProperty("startDate")
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
-
-    @JsonProperty("endDate")
-    public String getEndDate() {
-        return endDate;
-    }
-
-    @JsonProperty("endDate")
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
+    @JsonProperty("paymentInfo")
+    public void setPaymentInfo(PaymentInfo paymentInfo) {
+        this.paymentInfo = paymentInfo;
     }
 
     @JsonProperty("stayHolderId")
@@ -112,26 +64,6 @@ public class RoomStay {
         this.stayHolderId = stayHolderId;
     }
 
-    @JsonProperty("actionStatus")
-    public String getActionStatus() {
-        return actionStatus;
-    }
-
-    @JsonProperty("actionStatus")
-    public void setActionStatus(String actionStatus) {
-        this.actionStatus = actionStatus;
-    }
-
-    @JsonProperty("paymentInfo")
-    public PaymentInfo getPaymentInfo() {
-        return paymentInfo;
-    }
-
-    @JsonProperty("paymentInfo")
-    public void setPaymentInfo(PaymentInfo paymentInfo) {
-        this.paymentInfo = paymentInfo;
-    }
-
     @JsonProperty("roomRates")
     public List<RoomRate> getRoomRates() {
         return roomRates;
@@ -142,54 +74,44 @@ public class RoomStay {
         this.roomRates = roomRates;
     }
 
-    @JsonProperty("total")
-    public Total_ getTotal() {
-        return total;
+    @JsonProperty("comments")
+    public List<Comment> getComments() {
+        return comments;
     }
 
-    @JsonProperty("total")
-    public void setTotal(Total_ total) {
-        this.total = total;
+    @JsonProperty("comments")
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
-    @JsonProperty("totalBaseOccupancy")
-    public TotalBaseOccupancy getTotalBaseOccupancy() {
-        return totalBaseOccupancy;
+    @JsonProperty("telephones")
+    public List<Telephone> getTelephones() {
+        return telephones;
     }
 
-    @JsonProperty("totalBaseOccupancy")
-    public void setTotalBaseOccupancy(TotalBaseOccupancy totalBaseOccupancy) {
-        this.totalBaseOccupancy = totalBaseOccupancy;
+    @JsonProperty("telephones")
+    public void setTelephones(List<Telephone> telephones) {
+        this.telephones = telephones;
     }
 
-    @JsonProperty("totalExtraOccupancy")
-    public TotalExtraOccupancy getTotalExtraOccupancy() {
-        return totalExtraOccupancy;
+    @JsonProperty("actionStatus")
+    public String getActionStatus() {
+        return actionStatus;
     }
 
-    @JsonProperty("totalExtraOccupancy")
-    public void setTotalExtraOccupancy(TotalExtraOccupancy totalExtraOccupancy) {
-        this.totalExtraOccupancy = totalExtraOccupancy;
+    @JsonProperty("actionStatus")
+    public void setActionStatus(String actionStatus) {
+        this.actionStatus = actionStatus;
     }
 
-    @JsonProperty("factLines")
-    public List<FactLine> getFactLines() {
-        return factLines;
+    @JsonProperty("id")
+    public Integer getId() {
+        return id;
     }
 
-    @JsonProperty("factLines")
-    public void setFactLines(List<FactLine> factLines) {
-        this.factLines = factLines;
-    }
-
-    @JsonProperty("consolidatedRoomStayStatus")
-    public String getConsolidatedRoomStayStatus() {
-        return consolidatedRoomStayStatus;
-    }
-
-    @JsonProperty("consolidatedRoomStayStatus")
-    public void setConsolidatedRoomStayStatus(String consolidatedRoomStayStatus) {
-        this.consolidatedRoomStayStatus = consolidatedRoomStayStatus;
+    @JsonProperty("id")
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     @Override
@@ -209,7 +131,7 @@ public class RoomStay {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(synchroNumber).append(id).append(startDate).append(endDate).append(stayHolderId).append(actionStatus).append(paymentInfo).append(roomRates).append(total).append(totalBaseOccupancy).append(totalExtraOccupancy).append(factLines).append(consolidatedRoomStayStatus).append(additionalProperties).toHashCode();
+        return new HashCodeBuilder().append(paymentInfo).append(stayHolderId).append(roomRates).append(comments).append(telephones).append(actionStatus).append(id).append(additionalProperties).toHashCode();
     }
 
     @Override
@@ -221,7 +143,7 @@ public class RoomStay {
             return false;
         }
         RoomStay rhs = ((RoomStay) other);
-        return new EqualsBuilder().append(synchroNumber, rhs.synchroNumber).append(id, rhs.id).append(startDate, rhs.startDate).append(endDate, rhs.endDate).append(stayHolderId, rhs.stayHolderId).append(actionStatus, rhs.actionStatus).append(paymentInfo, rhs.paymentInfo).append(roomRates, rhs.roomRates).append(total, rhs.total).append(totalBaseOccupancy, rhs.totalBaseOccupancy).append(totalExtraOccupancy, rhs.totalExtraOccupancy).append(factLines, rhs.factLines).append(consolidatedRoomStayStatus, rhs.consolidatedRoomStayStatus).append(additionalProperties, rhs.additionalProperties).isEquals();
+        return new EqualsBuilder().append(paymentInfo, rhs.paymentInfo).append(stayHolderId, rhs.stayHolderId).append(roomRates, rhs.roomRates).append(comments, rhs.comments).append(telephones, rhs.telephones).append(actionStatus, rhs.actionStatus).append(id, rhs.id).append(additionalProperties, rhs.additionalProperties).isEquals();
     }
 
 }

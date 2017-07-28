@@ -2,7 +2,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
+import org.ameet.kafkasample.Util;
+import org.ameet.kafkasample.model.KafkaMessage;
 import org.ameet.kafkasample.model.ihg.EZMessage;
+import org.ameet.kafkasample.model.ihg.json.Reservation;
 import org.ameet.kafkasample.model.ihg.reservation.EnvelopeType;
 import org.ameet.kafkasample.model.ihg.reservation.ObjectFactory;
 import org.junit.Test;
@@ -16,6 +19,7 @@ import java.io.StringReader;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.InflaterInputStream;
 
@@ -101,16 +105,30 @@ public class TestEZProcessor {
 
     @Test
     public void testReservationJson() throws IOException {
-//        String text = Util.fileToString("Reservation.json");
-//
-//        Reservation reservation = mapper.readValue(text, Reservation.class);
-//        System.out.println("HotelCode: " + reservation.getHotelReservation().getHotel().getCode());
-//        reservation.getHotelReservation().getGuests().forEach(guest -> System.out.println(guest.getPersonName()
-//                .getGivenName() + ":" + guest.getPersonName().getSurname()));
-//        Pattern pattern = Pattern.compile("(?=.*\\{.*)(?=hotelReservation)", Pattern.DOTALL);
-//        if (pattern.matcher(text).find()) {
-//            System.out.println("YESSSS!!");
-//        }
+        String text = Util.fileToString("Reservation.json");
+
+        Reservation reservation = mapper.readValue(text, Reservation.class);
+        System.out.println("HotelCode: " + reservation.getHotelReservation().getHotel().getCode());
+        reservation.getHotelReservation().getGuests().forEach(guest -> System.out.println(guest.getPersonName()
+                .getGivenName() + ":" + guest.getPersonName().getSurname()));
+        Pattern pattern = Pattern.compile("(?=.*\\{.*)(?=hotelReservation)", Pattern.DOTALL);
+        if (pattern.matcher(text).find()) {
+            System.out.println("YESSSS!!");
+        }
+    }
+
+    @Test
+    public void testMetadata() {
+        String text = Util.fileToString("messageMetadata.json");
+        KafkaMessage kafkaMessage = null;
+        try {
+            kafkaMessage = mapper.readValue(text, KafkaMessage.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println(kafkaMessage.getMessageMetadata().getHotelCodes());
+        kafkaMessage.getMessageMetadata().setHotelCode(kafkaMessage.getMessageMetadata().getHotelCodes().toString());
+        System.out.println("hotel codes======>"+kafkaMessage.getMessageMetadata().getHotelCode());
     }
 
     @Test

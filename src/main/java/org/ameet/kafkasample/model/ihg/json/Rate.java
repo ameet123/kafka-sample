@@ -15,32 +15,33 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "unitMultiplier",
     "startDate",
     "endDate",
-    "rateTimeUnit",
-    "roomPricingType",
-    "unitMultiplier",
-    "base",
-    "dailyAmounts"
+    "base"
 })
 public class Rate {
 
+    @JsonProperty("unitMultiplier")
+    private Integer unitMultiplier;
     @JsonProperty("startDate")
     private String startDate;
     @JsonProperty("endDate")
     private String endDate;
-    @JsonProperty("rateTimeUnit")
-    private String rateTimeUnit;
-    @JsonProperty("roomPricingType")
-    private String roomPricingType;
-    @JsonProperty("unitMultiplier")
-    private Integer unitMultiplier;
     @JsonProperty("base")
     private Base base;
-    @JsonProperty("dailyAmounts")
-    private DailyAmounts dailyAmounts;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
+    @JsonProperty("unitMultiplier")
+    public Integer getUnitMultiplier() {
+        return unitMultiplier;
+    }
+
+    @JsonProperty("unitMultiplier")
+    public void setUnitMultiplier(Integer unitMultiplier) {
+        this.unitMultiplier = unitMultiplier;
+    }
 
     @JsonProperty("startDate")
     public String getStartDate() {
@@ -62,36 +63,6 @@ public class Rate {
         this.endDate = endDate;
     }
 
-    @JsonProperty("rateTimeUnit")
-    public String getRateTimeUnit() {
-        return rateTimeUnit;
-    }
-
-    @JsonProperty("rateTimeUnit")
-    public void setRateTimeUnit(String rateTimeUnit) {
-        this.rateTimeUnit = rateTimeUnit;
-    }
-
-    @JsonProperty("roomPricingType")
-    public String getRoomPricingType() {
-        return roomPricingType;
-    }
-
-    @JsonProperty("roomPricingType")
-    public void setRoomPricingType(String roomPricingType) {
-        this.roomPricingType = roomPricingType;
-    }
-
-    @JsonProperty("unitMultiplier")
-    public Integer getUnitMultiplier() {
-        return unitMultiplier;
-    }
-
-    @JsonProperty("unitMultiplier")
-    public void setUnitMultiplier(Integer unitMultiplier) {
-        this.unitMultiplier = unitMultiplier;
-    }
-
     @JsonProperty("base")
     public Base getBase() {
         return base;
@@ -100,16 +71,6 @@ public class Rate {
     @JsonProperty("base")
     public void setBase(Base base) {
         this.base = base;
-    }
-
-    @JsonProperty("dailyAmounts")
-    public DailyAmounts getDailyAmounts() {
-        return dailyAmounts;
-    }
-
-    @JsonProperty("dailyAmounts")
-    public void setDailyAmounts(DailyAmounts dailyAmounts) {
-        this.dailyAmounts = dailyAmounts;
     }
 
     @Override
@@ -129,7 +90,7 @@ public class Rate {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(startDate).append(endDate).append(rateTimeUnit).append(roomPricingType).append(unitMultiplier).append(base).append(dailyAmounts).append(additionalProperties).toHashCode();
+        return new HashCodeBuilder().append(unitMultiplier).append(startDate).append(endDate).append(base).append(additionalProperties).toHashCode();
     }
 
     @Override
@@ -141,7 +102,7 @@ public class Rate {
             return false;
         }
         Rate rhs = ((Rate) other);
-        return new EqualsBuilder().append(startDate, rhs.startDate).append(endDate, rhs.endDate).append(rateTimeUnit, rhs.rateTimeUnit).append(roomPricingType, rhs.roomPricingType).append(unitMultiplier, rhs.unitMultiplier).append(base, rhs.base).append(dailyAmounts, rhs.dailyAmounts).append(additionalProperties, rhs.additionalProperties).isEquals();
+        return new EqualsBuilder().append(unitMultiplier, rhs.unitMultiplier).append(startDate, rhs.startDate).append(endDate, rhs.endDate).append(base, rhs.base).append(additionalProperties, rhs.additionalProperties).isEquals();
     }
 
 }

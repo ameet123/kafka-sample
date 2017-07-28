@@ -41,7 +41,7 @@ public class KafkaProcessor {
         this.appConfig = appConfig;
         URL url = Resources.getResource(EZ_SAMPLE_FILE);
         EZ_SAMPLE_MSG = Resources.toString(url, Charsets.UTF_8);
-        RESERV_SAMPLE_MSG = Util.fileToString("Reservation.json");
+        RESERV_SAMPLE_MSG = Util.fileToString("json/Reservation.json");
         XML_MODIFY_REQ_MSG = Util.fileToString("ModifyreservationRequest.xml");
         METADATA = Util.fileToString("messageMetadata.json");
     }

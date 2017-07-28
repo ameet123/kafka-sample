@@ -108,8 +108,13 @@ public class MessageProcessor {
             kafkaMessage = mapper.readValue(s, KafkaMessage.class);
             messageMetadata = kafkaMessage.getMessageMetadata();
             String cfNumber = getCfNumber(kafkaMessage.getRawData());
-            if (messageMetadata != null && !Strings.isNullOrEmpty(cfNumber)) {
-                messageMetadata.setCfNumber(cfNumber);
+            if (messageMetadata != null) {
+                if (!Strings.isNullOrEmpty(cfNumber)) {
+                    messageMetadata.setCfNumber(cfNumber);
+                }
+                if (messageMetadata.getHotelCodes() != null && messageMetadata.getHotelCodes().size() > 0) {
+                    messageMetadata.setHotelCode(messageMetadata.getHotelCodes().toString());
+                }
             }
         } catch (IOException e) {
             LOGGER.error("ERR: unmarshalling metadata json{}:\n{}\n", e, s);

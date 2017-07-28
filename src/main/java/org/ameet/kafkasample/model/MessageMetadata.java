@@ -8,10 +8,7 @@ package org.ameet.kafkasample.model;
 import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -38,7 +35,9 @@ public class MessageMetadata {
     private String operationName;
     @JsonProperty("hotelCodes")
     @Transient
-    private List<String> hotelCodes = null;
+    private List<String> hotelCodes = new ArrayList<>();
+    @JsonIgnore
+    private String hotelCode;
     @JsonProperty("serviceName")
     private String serviceName;
     @JsonProperty("transactionId")
@@ -207,5 +206,13 @@ public class MessageMetadata {
                 ", routing='" + routing + '\'' +
                 ", messageId='" + messageId + '\'' +
                 '}';
+    }
+
+    public String getHotelCode() {
+        return hotelCode;
+    }
+
+    public void setHotelCode(String hotelCode) {
+        this.hotelCode = hotelCode;
     }
 }

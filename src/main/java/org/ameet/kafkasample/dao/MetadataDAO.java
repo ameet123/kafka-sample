@@ -25,9 +25,9 @@ public class MetadataDAO {
     private static final Logger LOGGER = LoggerFactory.getLogger(MetadataDAO.class);
     private static final String INSERT_SQL = "INSERT INTO message_metadata(channel_id, created_timestamp," +
             "message_id, operation_name, requestor_id, routing, service_name, target_system, transaction_id, type, " +
-            "cf_number) " +
+            "cf_number, hotel_code) " +
             "VALUES " +
-            "(?,?,?,?,?,?,?,?,?,?,?)";
+            "(?,?,?,?,?,?,?,?,?,?,?,?)";
     private static final String DISTINCT_CHANNELS_SQL = "SELECT DISTINCT m.channel_Id FROM Message_Metadata m";
     private static final String DISTINCT_SERVICE_SQL = "SELECT DISTINCT m.service_name FROM Message_Metadata m";
     private static final String DISTINCT_ROUTING_SQL = "SELECT DISTINCT m.routing FROM Message_Metadata m";
@@ -79,6 +79,7 @@ public class MetadataDAO {
                         ps.setString(9, metadata.getTransactionId());
                         ps.setString(10, metadata.getType());
                         ps.setString(11, metadata.getCfNumber());
+                        ps.setString(12, metadata.getHotelCode());
                     });
         } catch (DataAccessException e) {
             LOGGER.error("ERR: jdbc error inserting batch", e);
@@ -89,19 +90,22 @@ public class MetadataDAO {
     /**
      * since the query returns a single column, it needs to have List<Object> and not Object[]
      * also Sqlresult mapping does not work unless it's an entity.
+     *
      * @return
      */
     public List<Object> getDistinctChannels() {
         return getSingleColumnStringSql(DISTINCT_CHANNELS_SQL);
     }
+
     public List<Object> getDistinctService() {
         return getSingleColumnStringSql(DISTINCT_SERVICE_SQL);
     }
+
     public List<Object> getDistinctRouting() {
         return getSingleColumnStringSql(DISTINCT_ROUTING_SQL);
     }
 
-    private List<Object> getSingleColumnStringSql(String sql){
+    private List<Object> getSingleColumnStringSql(String sql) {
         Query query = em.createNativeQuery(sql);
         @SuppressWarnings("unchecked")
         List<Object> results = query.getResultList();

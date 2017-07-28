@@ -51,7 +51,8 @@ public class Util {
                 result.append(new String(Arrays.copyOf(buf, rlen)));
             }
         } catch (IOException e) {
-            LOGGER.error("Err reading ecoded inflated string", e);
+            LOGGER.error("Err reading encoded inflated string, returning original:{}\n{}", e.getMessage(), encoded);
+            return encoded;
         }
         return result.toString();
     }

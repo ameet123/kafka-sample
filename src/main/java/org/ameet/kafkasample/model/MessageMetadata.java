@@ -37,6 +37,7 @@ public class MessageMetadata {
     @Transient
     private List<String> hotelCodes = new ArrayList<>();
     @JsonIgnore
+    @Column(length = 2048)
     private String hotelCode;
     @JsonProperty("serviceName")
     private String serviceName;

@@ -107,6 +107,9 @@ public class MessageProcessor {
         try {
             kafkaMessage = mapper.readValue(s, KafkaMessage.class);
             messageMetadata = kafkaMessage.getMessageMetadata();
+            if (Strings.isNullOrEmpty(kafkaMessage.getRawData())){
+                LOGGER.error("ERR: rawData is null:{}", s);
+            }
             String cfNumber = getCfNumber(kafkaMessage.getRawData());
             if (messageMetadata != null) {
                 if (!Strings.isNullOrEmpty(cfNumber)) {
